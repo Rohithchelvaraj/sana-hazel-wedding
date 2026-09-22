@@ -13,7 +13,6 @@
             --soft-gold: #E5C158;
             --pure-white: #FFFFFF;
             --off-white: #FDFBF7;
-            --overlay-color: rgba(6, 12, 8, 0.65); 
         }
 
         body, html {
@@ -22,7 +21,7 @@
             font-family: 'Montserrat', sans-serif;
             background-color: #050806;
             color: var(--off-white);
-            overflow: hidden; /* Prevents horizontal scrolling on mobile */
+            overflow: hidden; 
             scroll-behavior: smooth;
         }
 
@@ -31,12 +30,10 @@
          */
         .reel-container {
             height: 100vh;
-            /* Mobile Safari fix for 100vh */
             height: 100dvh; 
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             position: relative;
-            /* Smooth momentum scrolling on iOS */
             -webkit-overflow-scrolling: touch; 
         }
 
@@ -63,34 +60,17 @@
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background-size: cover;
-            /* Center the most important part of the image for portrait mobile screens */
             background-position: center center;
             background-repeat: no-repeat;
             image-rendering: -webkit-optimize-contrast;
             z-index: 0;
-            /* Remove fixed attachment on mobile as it causes severe jank/bugs in Safari/Chrome iOS */
         }
 
         /* MAP EACH ATTACHED IMAGE TO ITS RESPECTIVE SLIDE */
-        /* Slide 1: Welcome - Pink Lotus Bowl */
-        .bg-slide-1 {
-            background-image: url('3ae5e1fd0759a9d37f9ea03ef4c1c755.jpg');
-        }
-
-        /* Slide 2: Madhuramvepp - Hanging Florals & Brass Bells */
-        .bg-slide-2 {
-            background-image: url('b3219ac4a5758c971474439a28830d00.jpg');
-        }
-
-        /* Slide 3: Engagement - Mandap setup in courtyard */
-        .bg-slide-3 {
-            background-image: url('7f00c9acee3ca2a463cbbe19b6335510.jpg');
-        }
-
-        /* Slide 4: RSVP - Decorated wooden chairs */
-        .bg-slide-4 {
-            background-image: url('623db16133a6758f32539fd6d8303f46.jpg');
-        }
+        .bg-slide-1 { background-image: url('3ae5e1fd0759a9d37f9ea03ef4c1c755.jpg'); }
+        .bg-slide-2 { background-image: url('b3219ac4a5758c971474439a28830d00.jpg'); }
+        .bg-slide-3 { background-image: url('7f00c9acee3ca2a463cbbe19b6335510.jpg'); }
+        .bg-slide-4 { background-image: url('623db16133a6758f32539fd6d8303f46.jpg'); }
 
         /* 
          * EDITORIAL DARKENING OVERLAY
@@ -98,11 +78,11 @@
         .slide-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(5,10,7,0.3) 0%, rgba(5,10,7,0.85) 100%);
+            background: linear-gradient(180deg, rgba(5,10,7,0.2) 0%, rgba(5,10,7,0.85) 100%);
             z-index: 2;
         }
 
-        /* Delicate inner frame, adjusted for mobile margins */
+        /* Delicate inner frame */
         .aesthetic-frame {
             position: absolute;
             top: 15px; left: 15px; right: 15px; bottom: 15px;
@@ -112,21 +92,28 @@
         }
 
         /* 
-         * EDITORIAL ARCH CARD (MOBILE RESPONSIVE)
+         * iOS LIQUID GLASS UI (EDITORIAL ARCH)
          */
         .editorial-arch {
-            background: var(--overlay-color);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-top: 1px solid rgba(212, 175, 55, 0.6);
-            /* Slightly softer arch for narrow mobile screens */
-            border-radius: 150px 150px 12px 12px; 
+            /* Base translucent gradient */
+            background: linear-gradient(135deg, rgba(20, 25, 22, 0.35) 0%, rgba(5, 10, 7, 0.6) 100%);
+            
+            /* iOS Signature: Intense blur + Saturation boost to make colors pop underneath */
+            backdrop-filter: blur(24px) saturate(180%) contrast(1.1);
+            -webkit-backdrop-filter: blur(24px) saturate(180%) contrast(1.1);
+            
+            /* Refracting edge highlights simulating glass light refraction */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
+            border-left: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 150px 150px 16px 16px; 
+            
+            /* Inner glow for "liquid thickness" + deep physical shadow */
+            box-shadow: inset 0 1px 12px rgba(255, 255, 255, 0.1), 0 30px 60px rgba(0,0,0,0.8);
+            
             padding: 50px 20px 35px 20px;
-            /* Width widened slightly on mobile to fit text better */
             width: 88%;
             max-width: 420px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
             position: relative;
             z-index: 4;
             text-align: center;
@@ -177,7 +164,6 @@
 
         /* 
          * MOBILE-OPTIMIZED TYPOGRAPHY 
-         * Using clamp() ensures fonts shrink gracefully on small phones
          */
         .subtitle {
             font-family: 'Cinzel', serif;
@@ -410,7 +396,6 @@
     </div>
 
     <script>
-        // Simplified, high-performance intersection observer for mobile
         document.addEventListener("DOMContentLoaded", () => {
             const arches = document.querySelectorAll('.editorial-arch');
             
@@ -423,7 +408,7 @@
                     }
                 });
             }, { 
-                threshold: 0.2 // Lower threshold for earlier mobile triggering
+                threshold: 0.2 
             });
 
             arches.forEach(arch => observer.observe(arch));
