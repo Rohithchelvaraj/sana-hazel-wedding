@@ -70,45 +70,53 @@
 
         /* 
          * EDITORIAL DARKENING OVERLAY
-         * Deepened slightly to support transparent text overlay
+         * Deepened to ensure the transparent text is highly readable against bright flowers
          */
         .slide-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, rgba(5,10,7,0.3) 0%, rgba(5,10,7,0.85) 100%);
+            background: linear-gradient(180deg, rgba(5,10,7,0.35) 0%, rgba(5,10,7,0.95) 100%);
             z-index: 2;
         }
 
-        /* Delicate inner frame */
-        .aesthetic-frame {
-            position: absolute;
-            top: 15px; left: 15px; right: 15px; bottom: 15px;
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            z-index: 3;
-            pointer-events: none;
-        }
-
         /* 
-         * TRANSPARENT EDITORIAL LAYOUT
+         * TRANSPARENT EDITORIAL LAYOUT (No Borders or Shapes)
          */
         .editorial-wrapper {
             background: transparent;
-            padding: 30px 20px;
+            padding: 20px;
             width: 90%;
             max-width: 450px;
             position: relative;
             z-index: 4;
             text-align: center;
-            
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .editorial-wrapper.visible {
+        /* 
+         * VISUAL GRACE: CASCADING BLUR-REVEAL ANIMATIONS
+         */
+        .animate-item {
+            opacity: 0;
+            transform: translateY(25px);
+            filter: blur(8px);
+            transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), filter 1.2s ease-out;
+        }
+
+        .editorial-wrapper.visible .animate-item {
             opacity: 1;
             transform: translateY(0);
+            filter: blur(0);
         }
+
+        /* Staggered cascading delays for each line of text */
+        .editorial-wrapper.visible .animate-item:nth-child(1) { transition-delay: 0.1s; }
+        .editorial-wrapper.visible .animate-item:nth-child(2) { transition-delay: 0.25s; }
+        .editorial-wrapper.visible .animate-item:nth-child(3) { transition-delay: 0.4s; }
+        .editorial-wrapper.visible .animate-item:nth-child(4) { transition-delay: 0.55s; }
+        .editorial-wrapper.visible .animate-item:nth-child(5) { transition-delay: 0.7s; }
+        .editorial-wrapper.visible .animate-item:nth-child(6) { transition-delay: 0.85s; }
+        .editorial-wrapper.visible .animate-item:nth-child(7) { transition-delay: 1.0s; }
+        .editorial-wrapper.visible .animate-item:nth-child(8) { transition-delay: 1.15s; }
 
         /* Christian Wedding Gold Cross */
         .christian-cross {
@@ -131,15 +139,15 @@
         }
 
         .vertical-line {
-            width: 1px;
+            width: 1.5px;
             height: 50px;
             background: linear-gradient(to bottom, transparent, var(--kasavu-gold), transparent);
             margin: 0 auto 20px auto;
         }
         
         .horizontal-line {
-            width: 50px;
-            height: 1px;
+            width: 60px;
+            height: 1.5px;
             background: var(--kasavu-gold);
             margin: 25px auto;
             opacity: 0.7;
@@ -160,7 +168,7 @@
 
         .names-script {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(3.2rem, 14vw, 5rem);
+            font-size: clamp(3.5rem, 14vw, 5.2rem);
             color: var(--pure-white);
             line-height: 1.1;
             margin: 0;
@@ -244,47 +252,6 @@
         }
 
         /* 
-         * MUSIC PLAYER UI
-         */
-        .music-control {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            width: 45px;
-            height: 45px;
-            background: rgba(10, 15, 12, 0.6);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(212, 175, 55, 0.5);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-        }
-
-        .music-control.playing {
-            border-color: var(--kasavu-gold);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-            animation: musicPulse 2s infinite;
-        }
-
-        .music-icon {
-            width: 20px;
-            height: 20px;
-            fill: var(--kasavu-gold);
-        }
-
-        @keyframes musicPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        /* 
          * INTERACTIVE ELEMENTS 
          */
         .swipe-indicator {
@@ -320,9 +287,8 @@
         .rsvp-btn {
             display: inline-block;
             margin-top: 15px;
-            padding: 12px 38px;
-            background: rgba(10, 15, 12, 0.4);
-            backdrop-filter: blur(5px);
+            padding: 14px 42px;
+            background: transparent;
             border: 1px solid var(--kasavu-gold);
             color: var(--kasavu-gold);
             text-decoration: none;
@@ -331,24 +297,18 @@
             font-size: 0.8rem;
             font-family: 'Cinzel', serif;
             transition: all 0.5s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        
+        .rsvp-btn:hover {
+            background: var(--kasavu-gold);
+            color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
     </style>
 </head>
 <body>
-
-    <!-- AUDIO ELEMENT (Replace src with your instrumental MP3 link) -->
-    <audio id="bg-music" loop>
-        <source src="YOUR_AUDIO_LINK_HERE.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- FLOATING MUSIC BUTTON -->
-    <div id="music-toggle" class="music-control">
-        <!-- SVG Play Icon -->
-        <svg class="music-icon play-icon" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-        </svg>
-    </div>
 
     <div class="reel-container">
         
@@ -356,18 +316,15 @@
         <section class="slide">
             <div class="slide-bg bg-slide-1"></div>
             <div class="slide-overlay"></div>
-            <div class="aesthetic-frame"></div>
             
             <div class="editorial-wrapper">
-                <div class="christian-cross"></div>
-                <div class="subtitle">Joyfully Inviting You</div>
-                
-                <h1 class="names-script">Sana Sunny</h1>
-                <div class="ampersand">&</div>
-                <h1 class="names-script">Hazel Joshy</h1>
-                
-                <div class="horizontal-line"></div>
-                <div class="details">Wayanad, Kerala</div>
+                <div class="christian-cross animate-item"></div>
+                <div class="subtitle animate-item">Joyfully Inviting You</div>
+                <h1 class="names-script animate-item">Sana Sunny</h1>
+                <div class="ampersand animate-item">&</div>
+                <h1 class="names-script animate-item">Hazel Joshy</h1>
+                <div class="horizontal-line animate-item"></div>
+                <div class="details animate-item">Wayanad, Kerala</div>
             </div>
             
             <div class="swipe-indicator">Swipe</div>
@@ -377,20 +334,17 @@
         <section class="slide">
             <div class="slide-bg bg-slide-2"></div>
             <div class="slide-overlay"></div>
-            <div class="aesthetic-frame"></div>
             
             <div class="editorial-wrapper">
-                <div class="vertical-line"></div>
-                <h2 class="event-heading">Madhuramvepp</h2>
-                <div class="horizontal-line"></div>
+                <div class="vertical-line animate-item"></div>
+                <h2 class="event-heading animate-item">Madhuramvepp</h2>
+                <div class="horizontal-line animate-item"></div>
                 
-                <div class="details">
-                    <span class="date-highlight">December 25, 2026</span>
-                    <span class="time-highlight">6:00 PM Onwards</span>
-                    <span class="venue-bold">Veliyathmalil House</span>
-                    <span style="font-size: 0.85em; opacity: 0.85;">Pulpally, Wayanad</span>
-                    <div class="theme-note">Theme: Florals</div>
-                </div>
+                <div class="date-highlight animate-item">December 25, 2026</div>
+                <div class="time-highlight animate-item">6:00 PM Onwards</div>
+                <div class="venue-bold animate-item">Veliyathmalil House</div>
+                <div class="details animate-item" style="font-size: 0.8em; letter-spacing: 2px;">Pulpally, Wayanad</div>
+                <div class="theme-note animate-item">Theme: Florals</div>
             </div>
             
             <div class="swipe-indicator">Swipe</div>
@@ -400,20 +354,17 @@
         <section class="slide">
             <div class="slide-bg bg-slide-3"></div>
             <div class="slide-overlay"></div>
-            <div class="aesthetic-frame"></div>
             
             <div class="editorial-wrapper">
-                <div class="vertical-line"></div>
-                <h2 class="event-heading">Engagement</h2>
-                <div class="horizontal-line"></div>
+                <div class="vertical-line animate-item"></div>
+                <h2 class="event-heading animate-item">Engagement</h2>
+                <div class="horizontal-line animate-item"></div>
                 
-                <div class="details">
-                    <span class="date-highlight">December 26, 2026</span>
-                    <span class="time-highlight">11:00 AM Onwards</span>
-                    <span class="venue-bold">St. Mary's Forane Church</span>
-                    <span style="font-size: 0.85em; opacity: 0.85;">Mullenkolly</span>
-                    <div class="theme-note">Reception to follow at the Parish Hall</div>
-                </div>
+                <div class="date-highlight animate-item">December 26, 2026</div>
+                <div class="time-highlight animate-item">11:00 AM Onwards</div>
+                <div class="venue-bold animate-item">St. Mary's Forane Church</div>
+                <div class="details animate-item" style="font-size: 0.8em; letter-spacing: 2px;">Mullenkolly</div>
+                <div class="theme-note animate-item">Reception to follow at the Parish Hall</div>
             </div>
             
             <div class="swipe-indicator">Swipe</div>
@@ -423,18 +374,17 @@
         <section class="slide">
             <div class="slide-bg bg-slide-4"></div>
             <div class="slide-overlay"></div>
-            <div class="aesthetic-frame"></div>
             
             <div class="editorial-wrapper">
-                <div class="vertical-line"></div>
-                <h2 class="event-heading">Join Us</h2>
-                <div class="horizontal-line"></div>
+                <div class="vertical-line animate-item"></div>
+                <h2 class="event-heading animate-item">Join Us</h2>
+                <div class="horizontal-line animate-item"></div>
                 
-                <div class="details" style="text-transform: none; letter-spacing: 1.5px; line-height: 1.6;">
+                <div class="details animate-item" style="text-transform: none; letter-spacing: 1.5px; line-height: 1.6;">
                     We would be deeply honored to share<br>these beautiful moments with you.
                 </div>
                 
-                <div style="margin-top: 20px;">
+                <div class="animate-item" style="margin-top: 25px;">
                     <a href="#" class="rsvp-btn">RSVP Here</a>
                 </div>
             </div>
@@ -444,42 +394,20 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Scroll Animation Observer
+            // Scroll Animation Observer for cascading reveals
             const wrappers = document.querySelectorAll('.editorial-wrapper');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('visible');
                     } else {
+                        // Remove class when out of view so it beautifully re-animates when scrolling back
                         entry.target.classList.remove('visible'); 
                     }
                 });
-            }, { threshold: 0.2 });
+            }, { threshold: 0.3 });
 
             wrappers.forEach(wrapper => observer.observe(wrapper));
-
-            // Music Player Logic
-            const musicBtn = document.getElementById('music-toggle');
-            const audio = document.getElementById('bg-music');
-            const iconPath = musicBtn.querySelector('path');
-            let isPlaying = false;
-
-            // Paths for Play and Pause icons
-            const playIcon = "M8 5v14l11-7z";
-            const pauseIcon = "M6 19h4V5H6v14zm8-14v14h4V5h-4z";
-
-            musicBtn.addEventListener('click', () => {
-                if (isPlaying) {
-                    audio.pause();
-                    iconPath.setAttribute('d', playIcon);
-                    musicBtn.classList.remove('playing');
-                } else {
-                    audio.play();
-                    iconPath.setAttribute('d', pauseIcon);
-                    musicBtn.classList.add('playing');
-                }
-                isPlaying = !isPlaying;
-            });
         });
     </script>
 </body>
