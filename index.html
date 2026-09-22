@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana & Hazel - Kerala Christian Wedding</title>
+    <style>
+        /* High-End Editorial Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500&family=Montserrat:wght@300;400;500&family=Great+Vibes&display=swap');
+        
+        :root {
+            --kasavu-gold: #D4AF37;
+            --soft-gold: #E5C158;
+            --pure-white: #FFFFFF;
+            --off-white: #FDFBF7;
+            --overlay-color: rgba(6, 12, 8, 0.55); 
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #050806;
+            color: var(--off-white);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 
+         * AESTHETIC FULL-SCREEN REEL 
+         */
+        .reel-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            position: relative;
+        }
+
+        /* 
+         * SLIDE ARCHITECTURE
+         */
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 
+         * FULL RESOLUTION BACKGROUND STACK
+         * Using background-size: cover combined with crisp rendering to prevent any loss of clarity.
+         */
+        .slide-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed; /* Parallax effect for supreme elegance */
+            image-rendering: -webkit-optimize-contrast;
+            z-index: 0;
+        }
+
+        /* MAP EACH ATTACHED IMAGE TO ITS RESPECTIVE SLIDE */
+        /* Slide 1: Welcome - Hanging Glass Tea-Light Ornaments */
+        .bg-slide-1 {
+            background-image: url('ec37f2cc29a23a20971b409c9b374dcd.jpg');
+        }
+
+        /* Slide 2: Madhuramvepp - Hanging Paper/Floral Strands */
+        .bg-slide-2 {
+            background-image: url('6fc93b8d83a7f474c1bdfaa7f383ad65.jpg');
+        }
+
+        /* Slide 3: Engagement - Hanging White Florals & Pink Lotus Buds */
+        .bg-slide-3 {
+            background-image: url('94d73ac11533ffcf463b353d80f0068e.jpg');
+        }
+
+        /* Slide 4: RSVP - Floating Pink Lotus Bowl */
+        .bg-slide-4 {
+            background-image: url('fc32535530bbb5340ded6cca62cdb924_2.jpg');
+        }
+
+        /* 
+         * EDITORIAL DARKENING OVERLAY
+         * Adds a subtle depth gradient so text remains easily readable without washing out the high-res photos.
+         */
+        .slide-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(5,10,7,0.25) 0%, rgba(5,10,7,0.82) 100%);
+            z-index: 2;
+        }
+
+        /* Delicate inner frame for a high-fashion invitation look */
+        .aesthetic-frame {
+            position: absolute;
+            top: 25px; left: 25px; right: 25px; bottom: 25px;
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        /* 
+         * EDITORIAL ARCH CARD (Aesthetic Text Container)
+         */
+        .editorial-arch {
+            background: var(--overlay-color);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-top: 1px solid rgba(212, 175, 55, 0.6);
+            border-radius: 200px 200px 12px 12px; /* Elegant Arch Shape */
+            padding: 60px 30px 45px 30px;
+            width: 85%;
+            max-width: 420px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            position: relative;
+            z-index: 4;
+            text-align: center;
+            
+            /* Animation setup for smooth reveal */
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Class added via JS when slide is in view */
+        .editorial-arch.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Christian Wedding Gold Cross */
+        .christian-cross {
+            width: 1px;
+            height: 45px;
+            background: var(--kasavu-gold);
+            margin: 0 auto 25px auto;
+            position: relative;
+        }
+        .christian-cross::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: -12px;
+            width: 25px;
+            height: 1px;
+            background: var(--kasavu-gold);
+        }
+
+        /* Fine lines for aesthetic separation */
+        .vertical-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, transparent, var(--kasavu-gold), transparent);
+            margin: 0 auto 20px auto;
+        }
+        
+        .horizontal-line {
+            width: 50px;
+            height: 1px;
+            background: var(--kasavu-gold);
+            margin: 25px auto;
+            opacity: 0.5;
+        }
+
+        /* 
+         * REFINED TYPOGRAPHY 
+         */
+        .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 7px;
+            color: var(--kasavu-gold);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .names-script {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3.8rem, 12vw, 5rem);
+            color: var(--pure-white);
+            line-height: 1.1;
+            margin: 0;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            font-weight: 400;
+        }
+
+        .ampersand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: var(--kasavu-gold);
+            font-style: italic;
+            margin: 5px 0;
+            font-weight: 300;
+        }
+
+        .details {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: rgba(253, 251, 247, 0.9);
+            text-transform: uppercase;
+            font-weight: 300;
+            line-height: 2;
+        }
+
+        .theme-note {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.7);
+            letter-spacing: 1px;
+            text-transform: none;
+            margin-top: 15px;
+        }
+
+        .event-heading {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--kasavu-gold);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 400;
+        }
+
+        .date-highlight {
+            color: var(--pure-white); 
+            font-weight: 400;
+            font-size: 1.2rem;
+            display: block;
+            margin: 15px 0 5px 0;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+        }
+
+        .time-highlight {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: rgba(253, 251, 247, 0.8);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .venue-bold {
+            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+            color: var(--kasavu-gold);
+            font-size: 1.05rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* 
+         * INTERACTIVE ELEMENTS 
+         */
+        .swipe-indicator {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            letter-spacing: 6px;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            z-index: 10;
+            animation: pulse 2s infinite;
+        }
+
+        .swipe-indicator::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 25px;
+            background: rgba(255,255,255,0.4);
+            margin: 8px auto 0 auto;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
+            100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+        }
+
+        .rsvp-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 14px 45px;
+            background: transparent;
+            border: 1px solid var(--kasavu-gold);
+            color: var(--kasavu-gold);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.8rem;
+            font-family: 'Cinzel', serif;
+            transition: all 0.5s ease;
+        }
+        
+        .rsvp-btn:hover {
+            background: var(--kasavu-gold);
+            color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Elegant Fade-in Animation Sequence */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+        }
+        .editorial-arch.visible .fade-up {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="reel-container">
+        
+        <!-- SLIDE 1: WELCOME -->
+        <section class="slide">
+            <div class="slide-bg bg-slide-1"></div>
+            <div class="slide-overlay"></div>
+            <div class="aesthetic-frame"></div>
+            
+            <div class="editorial-arch">
+                <div class="christian-cross"></div>
+                <div class="subtitle fade-up" style="transition-delay: 0.2s;">Joyfully Inviting You</div>
+                
+                <h1 class="names-script fade-up" style="transition-delay: 0.4s;">Sana Sunny</h1>
+                <div class="ampersand fade-up" style="transition-delay: 0.5s;">&</div>
+                <h1 class="names-script fade-up" style="transition-delay: 0.6s;">Hazel Joshy</h1>
+                
+                <div class="horizontal-line fade-up" style="transition-delay: 0.7s;"></div>
+                <div class="details fade-up" style="transition-delay: 0.8s;">Wayanad, Kerala</div>
+            </div>
+            
+            <div class="swipe-indicator">Swipe</div>
+        </section>
+
+        <!-- SLIDE 2: MADHURAMVEPP -->
+        <section class="slide">
+            <div class="slide-bg bg-slide-2"></div>
+            <div class="slide-overlay"></div>
+            <div class="aesthetic-frame"></div>
+            
+            <div class="editorial-arch">
+                <div class="vertical-line fade-up"></div>
+                <h2 class="event-heading fade-up" style="transition-delay: 0.2s;">Madhuramvepp</h2>
+                <div class="horizontal-line fade-up" style="transition-delay: 0.3s;"></div>
+                
+                <div class="details fade-up" style="transition-delay: 0.4s;">
+                    <span class="date-highlight">December 25, 2026</span>
+                    <span class="time-highlight">6:00 PM Onwards</span>
+                    <span class="venue-bold">Veliyathmalil House</span>
+                    <span style="font-size: 0.9em; opacity: 0.7;">Pulpally, Wayanad</span>
+                    <div class="theme-note">Theme: Florals</div>
+                </div>
+            </div>
+            
+            <div class="swipe-indicator">Swipe</div>
+        </section>
+
+        <!-- SLIDE 3: ENGAGEMENT -->
+        <section class="slide">
+            <div class="slide-bg bg-slide-3"></div>
+            <div class="slide-overlay"></div>
+            <div class="aesthetic-frame"></div>
+            
+            <div class="editorial-arch">
+                <div class="vertical-line fade-up"></div>
+                <h2 class="event-heading fade-up" style="transition-delay: 0.2s;">Engagement</h2>
+                <div class="horizontal-line fade-up" style="transition-delay: 0.3s;"></div>
+                
+                <div class="details fade-up" style="transition-delay: 0.4s;">
+                    <span class="date-highlight">December 26, 2026</span>
+                    <span class="time-highlight">11:00 AM Onwards</span>
+                    <span class="venue-bold">St. Mary's Forane Church</span>
+                    <span style="font-size: 0.9em; opacity: 0.7;">Mullenkolly</span>
+                    <div class="theme-note">Reception to follow at the Parish Hall</div>
+                </div>
+            </div>
+            
+            <div class="swipe-indicator">Swipe</div>
+        </section>
+
+        <!-- SLIDE 4: RSVP -->
+        <section class="slide">
+            <div class="slide-bg bg-slide-4"></div>
+            <div class="slide-overlay"></div>
+            <div class="theme-note"></div>
+            <div class="aesthetic-frame"></div>
+            
+            <div class="editorial-arch">
+                <div class="vertical-line fade-up"></div>
+                <h2 class="event-heading fade-up" style="transition-delay: 0.2s;">Join Us</h2>
+                <div class="horizontal-line fade-up" style="transition-delay: 0.3s;"></div>
+                
+                <div class="details fade-up" style="transition-delay: 0.4s;" style="text-transform: none; letter-spacing: 2px; line-height: 1.6;">
+                    We would be deeply honored to share<br>these beautiful moments with you.
+                </div>
+                
+                <div class="fade-up" style="transition-delay: 0.6s; margin-top: 25px;">
+                    <a href="#" class="rsvp-btn">RSVP Here</a>
+                </div>
+            </div>
+        </section>
+
+</table></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const arches = document.querySelectorAll('.editorial-arch');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        // Resets animation so it plays again when scrolling back
+                        entry.target.classList.remove('visible'); 
+                    }
+                });
+            }, { 
+                threshold: 0.35
+            });
+
+            arches.forEach(arch => observer.observe(arch));
+        });
+    </script>
+</body>
+</html>
