@@ -26,7 +26,7 @@
         }
 
         /* 
-         * AESTHETIC FULL-SCREEN REEL (MOBILE OPTIMIZED)
+         * AESTHETIC FULL-SCREEN REEL
          */
         .reel-container {
             height: 100vh;
@@ -37,9 +37,6 @@
             -webkit-overflow-scrolling: touch; 
         }
 
-        /* 
-         * SLIDE ARCHITECTURE
-         */
         .slide {
             height: 100vh;
             height: 100dvh;
@@ -66,7 +63,6 @@
             z-index: 0;
         }
 
-        /* MAP EACH ATTACHED IMAGE TO ITS RESPECTIVE SLIDE */
         .bg-slide-1 { background-image: url('3ae5e1fd0759a9d37f9ea03ef4c1c755.jpg'); }
         .bg-slide-2 { background-image: url('b3219ac4a5758c971474439a28830d00.jpg'); }
         .bg-slide-3 { background-image: url('7f00c9acee3ca2a463cbbe19b6335510.jpg'); }
@@ -74,11 +70,12 @@
 
         /* 
          * EDITORIAL DARKENING OVERLAY
+         * Deepened slightly to support transparent text overlay
          */
         .slide-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(5,10,7,0.2) 0%, rgba(5,10,7,0.85) 100%);
+            background: radial-gradient(circle at center, rgba(5,10,7,0.3) 0%, rgba(5,10,7,0.85) 100%);
             z-index: 2;
         }
 
@@ -92,28 +89,13 @@
         }
 
         /* 
-         * iOS LIQUID GLASS UI (EDITORIAL ARCH)
+         * TRANSPARENT EDITORIAL LAYOUT
          */
-        .editorial-arch {
-            /* Base translucent gradient */
-            background: linear-gradient(135deg, rgba(20, 25, 22, 0.35) 0%, rgba(5, 10, 7, 0.6) 100%);
-            
-            /* iOS Signature: Intense blur + Saturation boost to make colors pop underneath */
-            backdrop-filter: blur(24px) saturate(180%) contrast(1.1);
-            -webkit-backdrop-filter: blur(24px) saturate(180%) contrast(1.1);
-            
-            /* Refracting edge highlights simulating glass light refraction */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(255, 255, 255, 0.25);
-            border-left: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 150px 150px 16px 16px; 
-            
-            /* Inner glow for "liquid thickness" + deep physical shadow */
-            box-shadow: inset 0 1px 12px rgba(255, 255, 255, 0.1), 0 30px 60px rgba(0,0,0,0.8);
-            
-            padding: 50px 20px 35px 20px;
-            width: 88%;
-            max-width: 420px;
+        .editorial-wrapper {
+            background: transparent;
+            padding: 30px 20px;
+            width: 90%;
+            max-width: 450px;
             position: relative;
             z-index: 4;
             text-align: center;
@@ -123,133 +105,183 @@
             transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .editorial-arch.visible {
+        .editorial-wrapper.visible {
             opacity: 1;
             transform: translateY(0);
         }
 
         /* Christian Wedding Gold Cross */
         .christian-cross {
-            width: 1px;
-            height: 40px;
+            width: 1.5px;
+            height: 45px;
             background: var(--kasavu-gold);
-            margin: 0 auto 20px auto;
+            margin: 0 auto 25px auto;
             position: relative;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
         }
         .christian-cross::after {
             content: '';
             position: absolute;
-            top: 12px;
-            left: -10px;
-            width: 21px;
-            height: 1px;
+            top: 15px;
+            left: -12px;
+            width: 25px;
+            height: 1.5px;
             background: var(--kasavu-gold);
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
         }
 
-        /* Fine lines for aesthetic separation */
         .vertical-line {
             width: 1px;
-            height: 40px;
+            height: 50px;
             background: linear-gradient(to bottom, transparent, var(--kasavu-gold), transparent);
-            margin: 0 auto 15px auto;
+            margin: 0 auto 20px auto;
         }
         
         .horizontal-line {
-            width: 40px;
+            width: 50px;
             height: 1px;
             background: var(--kasavu-gold);
-            margin: 20px auto;
-            opacity: 0.5;
+            margin: 25px auto;
+            opacity: 0.7;
         }
 
         /* 
-         * MOBILE-OPTIMIZED TYPOGRAPHY 
+         * TYPOGRAPHY WITH CINEMATIC SHADOWS FOR READABILITY
          */
         .subtitle {
             font-family: 'Cinzel', serif;
-            font-size: clamp(0.6rem, 2.5vw, 0.75rem);
-            letter-spacing: 5px;
+            font-size: clamp(0.65rem, 2.5vw, 0.8rem);
+            letter-spacing: 6px;
             color: var(--kasavu-gold);
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.9);
         }
 
         .names-script {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(3rem, 14vw, 4.5rem);
+            font-size: clamp(3.2rem, 14vw, 5rem);
             color: var(--pure-white);
             line-height: 1.1;
             margin: 0;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.9), 0 2px 5px rgba(0,0,0,0.8);
             font-weight: 400;
         }
 
         .ampersand {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.4rem, 6vw, 1.8rem);
+            font-size: clamp(1.6rem, 6vw, 2rem);
             color: var(--kasavu-gold);
             font-style: italic;
-            margin: 2px 0;
+            margin: 5px 0;
             font-weight: 300;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
         .details {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(0.75rem, 3vw, 0.85rem);
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
             letter-spacing: 3px;
-            color: rgba(253, 251, 247, 0.9);
+            color: rgba(253, 251, 247, 0.95);
             text-transform: uppercase;
-            font-weight: 300;
-            line-height: 1.8;
+            font-weight: 400;
+            line-height: 1.9;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
         .theme-note {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            color: rgba(255,255,255,0.7);
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            color: rgba(255,255,255,0.85);
             letter-spacing: 1px;
             text-transform: none;
-            margin-top: 10px;
+            margin-top: 12px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
         .event-heading {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.4rem, 6vw, 1.8rem);
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
             color: var(--kasavu-gold);
             margin-bottom: 5px;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             font-weight: 400;
+            text-shadow: 0 3px 15px rgba(0,0,0,0.9);
         }
 
         .date-highlight {
             color: var(--pure-white); 
-            font-weight: 400;
-            font-size: clamp(1rem, 4.5vw, 1.2rem);
+            font-weight: 500;
+            font-size: clamp(1.1rem, 4.5vw, 1.4rem);
             display: block;
-            margin: 10px 0 5px 0;
+            margin: 12px 0 6px 0;
             font-family: 'Cinzel', serif;
             letter-spacing: 2px;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.9);
         }
 
         .time-highlight {
-            font-size: clamp(0.7rem, 3vw, 0.85rem);
-            letter-spacing: 2px;
-            color: rgba(253, 251, 247, 0.8);
+            font-size: clamp(0.75rem, 3vw, 0.9rem);
+            letter-spacing: 2.5px;
+            color: rgba(253, 251, 247, 0.9);
             text-transform: uppercase;
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
         .venue-bold {
             font-family: 'Cinzel', serif;
-            font-weight: 500;
-            letter-spacing: 1px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
             color: var(--kasavu-gold);
-            font-size: clamp(0.9rem, 3.5vw, 1.05rem);
+            font-size: clamp(0.95rem, 3.5vw, 1.15rem);
             display: block;
             margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+        }
+
+        /* 
+         * MUSIC PLAYER UI
+         */
+        .music-control {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            background: rgba(10, 15, 12, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .music-control.playing {
+            border-color: var(--kasavu-gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+            animation: musicPulse 2s infinite;
+        }
+
+        .music-icon {
+            width: 20px;
+            height: 20px;
+            fill: var(--kasavu-gold);
+        }
+
+        @keyframes musicPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         /* 
@@ -261,12 +293,13 @@
             left: 50%;
             transform: translateX(-50%);
             font-family: 'Cinzel', serif;
-            font-size: 0.6rem;
-            letter-spacing: 4px;
-            color: rgba(255,255,255,0.6);
+            font-size: 0.65rem;
+            letter-spacing: 5px;
+            color: rgba(255,255,255,0.7);
             text-transform: uppercase;
             z-index: 10;
             animation: pulse 2s infinite;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
         }
 
         .swipe-indicator::after {
@@ -274,27 +307,28 @@
             display: block;
             width: 1px;
             height: 20px;
-            background: rgba(255,255,255,0.4);
-            margin: 6px auto 0 auto;
+            background: rgba(255,255,255,0.6);
+            margin: 8px auto 0 auto;
         }
 
         @keyframes pulse {
-            0% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+            0% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
             50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
-            100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
         }
 
         .rsvp-btn {
             display: inline-block;
-            margin-top: 10px;
-            padding: 12px 35px;
-            background: transparent;
+            margin-top: 15px;
+            padding: 12px 38px;
+            background: rgba(10, 15, 12, 0.4);
+            backdrop-filter: blur(5px);
             border: 1px solid var(--kasavu-gold);
             color: var(--kasavu-gold);
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 3px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-family: 'Cinzel', serif;
             transition: all 0.5s ease;
         }
@@ -302,6 +336,19 @@
     </style>
 </head>
 <body>
+
+    <!-- AUDIO ELEMENT (Replace src with your instrumental MP3 link) -->
+    <audio id="bg-music" loop>
+        <source src="YOUR_AUDIO_LINK_HERE.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- FLOATING MUSIC BUTTON -->
+    <div id="music-toggle" class="music-control">
+        <!-- SVG Play Icon -->
+        <svg class="music-icon play-icon" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+        </svg>
+    </div>
 
     <div class="reel-container">
         
@@ -311,7 +358,7 @@
             <div class="slide-overlay"></div>
             <div class="aesthetic-frame"></div>
             
-            <div class="editorial-arch">
+            <div class="editorial-wrapper">
                 <div class="christian-cross"></div>
                 <div class="subtitle">Joyfully Inviting You</div>
                 
@@ -332,7 +379,7 @@
             <div class="slide-overlay"></div>
             <div class="aesthetic-frame"></div>
             
-            <div class="editorial-arch">
+            <div class="editorial-wrapper">
                 <div class="vertical-line"></div>
                 <h2 class="event-heading">Madhuramvepp</h2>
                 <div class="horizontal-line"></div>
@@ -341,7 +388,7 @@
                     <span class="date-highlight">December 25, 2026</span>
                     <span class="time-highlight">6:00 PM Onwards</span>
                     <span class="venue-bold">Veliyathmalil House</span>
-                    <span style="font-size: 0.85em; opacity: 0.7;">Pulpally, Wayanad</span>
+                    <span style="font-size: 0.85em; opacity: 0.85;">Pulpally, Wayanad</span>
                     <div class="theme-note">Theme: Florals</div>
                 </div>
             </div>
@@ -355,7 +402,7 @@
             <div class="slide-overlay"></div>
             <div class="aesthetic-frame"></div>
             
-            <div class="editorial-arch">
+            <div class="editorial-wrapper">
                 <div class="vertical-line"></div>
                 <h2 class="event-heading">Engagement</h2>
                 <div class="horizontal-line"></div>
@@ -364,7 +411,7 @@
                     <span class="date-highlight">December 26, 2026</span>
                     <span class="time-highlight">11:00 AM Onwards</span>
                     <span class="venue-bold">St. Mary's Forane Church</span>
-                    <span style="font-size: 0.85em; opacity: 0.7;">Mullenkolly</span>
+                    <span style="font-size: 0.85em; opacity: 0.85;">Mullenkolly</span>
                     <div class="theme-note">Reception to follow at the Parish Hall</div>
                 </div>
             </div>
@@ -378,12 +425,12 @@
             <div class="slide-overlay"></div>
             <div class="aesthetic-frame"></div>
             
-            <div class="editorial-arch">
+            <div class="editorial-wrapper">
                 <div class="vertical-line"></div>
                 <h2 class="event-heading">Join Us</h2>
                 <div class="horizontal-line"></div>
                 
-                <div class="details" style="text-transform: none; letter-spacing: 1.5px; line-height: 1.5;">
+                <div class="details" style="text-transform: none; letter-spacing: 1.5px; line-height: 1.6;">
                     We would be deeply honored to share<br>these beautiful moments with you.
                 </div>
                 
@@ -397,8 +444,8 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const arches = document.querySelectorAll('.editorial-arch');
-            
+            // Scroll Animation Observer
+            const wrappers = document.querySelectorAll('.editorial-wrapper');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -407,11 +454,32 @@
                         entry.target.classList.remove('visible'); 
                     }
                 });
-            }, { 
-                threshold: 0.2 
-            });
+            }, { threshold: 0.2 });
 
-            arches.forEach(arch => observer.observe(arch));
+            wrappers.forEach(wrapper => observer.observe(wrapper));
+
+            // Music Player Logic
+            const musicBtn = document.getElementById('music-toggle');
+            const audio = document.getElementById('bg-music');
+            const iconPath = musicBtn.querySelector('path');
+            let isPlaying = false;
+
+            // Paths for Play and Pause icons
+            const playIcon = "M8 5v14l11-7z";
+            const pauseIcon = "M6 19h4V5H6v14zm8-14v14h4V5h-4z";
+
+            musicBtn.addEventListener('click', () => {
+                if (isPlaying) {
+                    audio.pause();
+                    iconPath.setAttribute('d', playIcon);
+                    musicBtn.classList.remove('playing');
+                } else {
+                    audio.play();
+                    iconPath.setAttribute('d', pauseIcon);
+                    musicBtn.classList.add('playing');
+                }
+                isPlaying = !isPlaying;
+            });
         });
     </script>
 </body>
