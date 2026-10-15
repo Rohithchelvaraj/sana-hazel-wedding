@@ -1195,7 +1195,7 @@
             renderParticles();
         });
 
-        // 6. YouTube Audio Loop & Envelope Unlock Logic (0:00 -> 0:25, then loops 0:21 -> 0:25)
+        // 6. YouTube Audio Loop & Envelope Unlock Logic (0:00 -> 0:25, then loops 0:22 -> 0:25)
         let player;
         let isPlaying = false;
         let loopInterval;
@@ -1254,13 +1254,13 @@
             }, 650);
         });
 
-        // Monitors the video to seamlessly loop back to 0:21 after hitting 0:25
+        // Monitors the video to seamlessly loop back to 0:22 after hitting 0:25
         function onPlayerStateChange(event) {
             if (event.data == YT.PlayerState.PLAYING) {
                 clearInterval(loopInterval);
                 loopInterval = setInterval(() => {
                     if (player.getCurrentTime() >= 25) {
-                        player.seekTo(21);
+                        player.seekTo(22);
                     }
                 }, 50);
             } else {
@@ -1279,7 +1279,7 @@
                 musicBtn.classList.remove('playing');
             } else {
                 if (player.getCurrentTime() >= 25) {
-                    player.seekTo(21);
+                    player.seekTo(22);
                 }
                 player.playVideo();
                 musicText.innerText = "Music";
