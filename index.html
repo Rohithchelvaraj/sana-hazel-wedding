@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sana & Hazel - Kerala Christian Wedding</title>
+    
+    <!-- Preload Couple Photos for Instant Viewing -->
+    <link rel="preload" as="image" href="PhotoA.jpg">
+    <link rel="preload" as="image" href="PhotoB.jpg">
+    <link rel="preload" as="image" href="PhotoC.jpg">
+    <link rel="preload" as="image" href="PhotoD.jpg">
+    <link rel="preload" as="image" href="PhotoE.jpg">
+    <link rel="preload" as="image" href="PhotoF.jpg">
+    <link rel="preload" as="image" href="PhotoG.jpg">
+
     <style>
         /* High-End Editorial Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500&family=Montserrat:wght@300;400;500&family=Great+Vibes&display=swap');
@@ -23,6 +33,93 @@
             color: var(--off-white);
             overflow: hidden; 
             scroll-behavior: smooth;
+        }
+
+        /* 
+         * 1. ARGON "TAP TO OPEN" MONOGRAM PRELOADER
+         */
+        .envelope-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
+            background: radial-gradient(circle at center, #0e1612 0%, #040705 100%);
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .envelope-overlay.opened {
+            opacity: 0;
+            transform: scale(1.08);
+            pointer-events: none;
+        }
+
+        .wax-seal {
+            width: 115px;
+            height: 115px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(212, 175, 55, 0.25), rgba(10, 15, 12, 0.9));
+            border: 1.5px solid var(--kasavu-gold);
+            box-shadow: 0 0 35px rgba(212, 175, 55, 0.25), inset 0 0 20px rgba(212, 175, 55, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 28px;
+            position: relative;
+            animation: sealPulse 2.5s infinite ease-in-out;
+        }
+
+        .wax-seal::before {
+            content: '';
+            position: absolute;
+            top: 6px; left: 6px; right: 6px; bottom: 6px;
+            border-radius: 50%;
+            border: 0.5px dashed rgba(212, 175, 55, 0.6);
+        }
+
+        .monogram-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.3rem;
+            color: var(--pure-white);
+            text-shadow: 0 2px 12px rgba(212, 175, 55, 0.6);
+            padding-right: 4px;
+        }
+
+        @keyframes sealPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2), inset 0 0 15px rgba(212, 175, 55, 0.15); }
+            50% { transform: scale(1.05); box-shadow: 0 0 45px rgba(212, 175, 55, 0.45), inset 0 0 25px rgba(212, 175, 55, 0.3); }
+        }
+
+        .open-prompt {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 5px;
+            color: var(--kasavu-gold);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .open-subprompt {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 1px;
+        }
+
+        /* 
+         * 2. AMBIENT FLOATING GOLD DUST CANVAS
+         */
+        #gold-dust {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 3;
         }
 
         /* 
@@ -51,16 +148,18 @@
         }
 
         /* 
-         * FULL RESOLUTION BACKGROUND STACK
+         * FULL RESOLUTION BACKGROUND STACK WITH PARALLAX SUPPORT
          */
         .slide-bg {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: -5%; left: -5%; width: 110%; height: 110%;
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
             image-rendering: -webkit-optimize-contrast;
             z-index: 0;
+            transition: transform 0.25s ease-out;
+            will-change: transform;
         }
 
         .bg-slide-1 { background-image: url('3ae5e1fd0759a9d37f9ea03ef4c1c755.jpg'); }
@@ -96,7 +195,6 @@
             overflow: hidden;
         }
 
-        /* Blurred background fill for uncropped photos */
         .carousel-bg {
             position: absolute;
             top: -10%; left: -10%; width: 120%; height: 120%;
@@ -106,7 +204,6 @@
             z-index: 0;
         }
 
-        /* Uncropped, fully visible foreground photo */
         .carousel-img {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -115,6 +212,30 @@
             background-repeat: no-repeat;
             z-index: 1;
             filter: drop-shadow(0 10px 30px rgba(0,0,0,0.8));
+        }
+
+        /* Carousel Progress Dots */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transition: all 0.35s ease;
+        }
+
+        .dot.active {
+            width: 18px;
+            border-radius: 10px;
+            background: var(--kasavu-gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.8);
         }
 
         /* 
@@ -157,22 +278,22 @@
         }
 
         .editorial-wrapper.visible .animate-item:nth-child(1) { transition-delay: 0.1s; }
-        .editorial-wrapper.visible .animate-item:nth-child(2) { transition-delay: 0.25s; }
-        .editorial-wrapper.visible .animate-item:nth-child(3) { transition-delay: 0.4s; }
-        .editorial-wrapper.visible .animate-item:nth-child(4) { transition-delay: 0.55s; }
-        .editorial-wrapper.visible .animate-item:nth-child(5) { transition-delay: 0.7s; }
-        .editorial-wrapper.visible .animate-item:nth-child(6) { transition-delay: 0.85s; }
-        .editorial-wrapper.visible .animate-item:nth-child(7) { transition-delay: 1.0s; }
-        .editorial-wrapper.visible .animate-item:nth-child(8) { transition-delay: 1.15s; }
-        .editorial-wrapper.visible .animate-item:nth-child(9) { transition-delay: 1.30s; }
-        .editorial-wrapper.visible .animate-item:nth-child(10) { transition-delay: 1.45s; }
+        .editorial-wrapper.visible .animate-item:nth-child(2) { transition-delay: 0.22s; }
+        .editorial-wrapper.visible .animate-item:nth-child(3) { transition-delay: 0.34s; }
+        .editorial-wrapper.visible .animate-item:nth-child(4) { transition-delay: 0.46s; }
+        .editorial-wrapper.visible .animate-item:nth-child(5) { transition-delay: 0.58s; }
+        .editorial-wrapper.visible .animate-item:nth-child(6) { transition-delay: 0.70s; }
+        .editorial-wrapper.visible .animate-item:nth-child(7) { transition-delay: 0.82s; }
+        .editorial-wrapper.visible .animate-item:nth-child(8) { transition-delay: 0.94s; }
+        .editorial-wrapper.visible .animate-item:nth-child(9) { transition-delay: 1.06s; }
+        .editorial-wrapper.visible .animate-item:nth-child(10) { transition-delay: 1.18s; }
 
         /* Christian Wedding Gold Cross */
         .christian-cross {
             width: 1.5px;
             height: 45px;
             background: var(--kasavu-gold);
-            margin: 0 auto 25px auto;
+            margin: 0 auto 20px auto;
             position: relative;
             box-shadow: 0 0 10px rgba(0,0,0,0.8);
         }
@@ -189,16 +310,16 @@
 
         .vertical-line {
             width: 1.5px;
-            height: 50px;
+            height: 45px;
             background: linear-gradient(to bottom, transparent, var(--kasavu-gold), transparent);
-            margin: 0 auto 20px auto;
+            margin: 0 auto 15px auto;
         }
         
         .horizontal-line {
             width: 60px;
             height: 1.5px;
             background: var(--kasavu-gold);
-            margin: 25px auto;
+            margin: 20px auto;
             opacity: 0.7;
         }
 
@@ -207,7 +328,6 @@
          */
         .names-script {
             font-family: 'Great Vibes', cursive;
-            /* Scaled slightly to accommodate 'Hazel Joshy Thomas' gracefully on mobile */
             font-size: clamp(2.7rem, 11vw, 4.3rem);
             color: var(--pure-white);
             line-height: 1.05;
@@ -233,7 +353,7 @@
             color: rgba(253, 251, 247, 0.95);
             text-transform: uppercase;
             font-weight: 400;
-            line-height: 1.9;
+            line-height: 1.8;
             text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
@@ -244,13 +364,13 @@
             color: rgba(255,255,255,0.85);
             letter-spacing: 1px;
             text-transform: none;
-            margin-top: 15px;
+            margin-top: 12px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
         .event-heading {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.6rem, 6vw, 2.2rem);
+            font-size: clamp(1.5rem, 6vw, 2.1rem);
             color: var(--kasavu-gold);
             margin-bottom: 5px;
             text-transform: uppercase;
@@ -262,21 +382,21 @@
         .date-highlight {
             color: var(--pure-white); 
             font-weight: 500;
-            font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+            font-size: clamp(1.1rem, 4.5vw, 1.35rem);
             display: block;
-            margin: 12px 0 6px 0;
+            margin: 10px 0 4px 0;
             font-family: 'Cinzel', serif;
             letter-spacing: 2px;
             text-shadow: 0 2px 12px rgba(0,0,0,0.9);
         }
 
         .time-highlight {
-            font-size: clamp(0.75rem, 3vw, 0.9rem);
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
             letter-spacing: 2.5px;
             color: rgba(253, 251, 247, 0.9);
             text-transform: uppercase;
             display: block;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
@@ -287,54 +407,113 @@
             color: var(--kasavu-gold);
             font-size: clamp(0.95rem, 3.5vw, 1.15rem);
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.9);
         }
 
         /* 
-         * INTERACTIVE ELEMENTS (MAP & RSVP BUTTONS)
+         * ACTION PILLS (VIEW MAP & SAVE THE DATE)
          */
+        .action-pills {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 12px 0;
+        }
+
         .map-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            margin: 8px 0 15px 0;
-            padding: 10px 22px;
+            gap: 7px;
+            padding: 9px 18px;
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 0.5px solid rgba(212, 175, 55, 0.4);
+            border: 0.5px solid rgba(212, 175, 55, 0.45);
             border-radius: 30px;
             color: var(--pure-white);
             text-decoration: none;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
-            letter-spacing: 2.5px;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
         
         .map-btn:hover {
-            background: rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.18);
             border-color: var(--kasavu-gold);
             transform: translateY(-2px);
         }
 
         .map-icon {
-            width: 14px;
-            height: 14px;
+            width: 13px;
+            height: 13px;
             fill: var(--kasavu-gold);
         }
 
+        /* 
+         * MINIMALIST COUNTDOWN TIMER
+         */
+        .countdown-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            margin: 18px auto;
+            padding: 12px 20px;
+            background: rgba(10, 15, 12, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 0.5px solid rgba(212, 175, 55, 0.35);
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .cd-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 42px;
+        }
+
+        .cd-num {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.1rem, 4vw, 1.35rem);
+            color: var(--pure-white);
+            letter-spacing: 1px;
+        }
+
+        .cd-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.5rem;
+            letter-spacing: 2px;
+            color: var(--kasavu-gold);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .cd-sep {
+            color: rgba(212, 175, 55, 0.4);
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            margin-top: -10px;
+        }
+
+        /* 
+         * SWIPE & RSVP CONTROLS
+         */
         .swipe-indicator {
             position: absolute;
-            bottom: 25px;
+            bottom: 22px;
             left: 50%;
             transform: translateX(-50%);
             font-family: 'Cinzel', serif;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             letter-spacing: 5px;
             color: rgba(255,255,255,0.7);
             text-transform: uppercase;
@@ -348,9 +527,9 @@
             content: '';
             display: block;
             width: 1px;
-            height: 20px;
+            height: 18px;
             background: rgba(255,255,255,0.6);
-            margin: 8px auto 0 auto;
+            margin: 6px auto 0 auto;
         }
 
         @keyframes swipePulse {
@@ -361,9 +540,9 @@
 
         .rsvp-btn {
             display: inline-block;
-            margin-top: 15px;
+            margin-top: 8px;
             padding: 14px 42px;
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(212, 175, 55, 0.12);
             backdrop-filter: blur(8px);
             border: 1px solid var(--kasavu-gold);
             color: var(--kasavu-gold);
@@ -433,7 +612,6 @@
             transition: height 0.3s ease;
         }
 
-        /* Dancing equalizer bars when music is active */
         .music-control.playing .eq-bar:nth-child(1) { animation: eqBounce 0.8s ease-in-out infinite; }
         .music-control.playing .eq-bar:nth-child(2) { animation: eqBounce 0.6s ease-in-out infinite 0.2s; }
         .music-control.playing .eq-bar:nth-child(3) { animation: eqBounce 0.9s ease-in-out infinite 0.4s; }
@@ -551,6 +729,18 @@
 </head>
 <body>
 
+    <!-- 1. TAP TO OPEN MONOGRAM SEAL OVERLAY -->
+    <div id="envelope-overlay" class="envelope-overlay">
+        <div class="wax-seal">
+            <span class="monogram-text">S & H</span>
+        </div>
+        <div class="open-prompt">Tap to Open</div>
+        <div class="open-subprompt">Sana & Hazel's Wedding Invitation</div>
+    </div>
+
+    <!-- 2. AMBIENT GOLD DUST PARTICLES -->
+    <canvas id="gold-dust"></canvas>
+
     <!-- YOUTUBE PLAYER CONTAINER -->
     <div id="yt-player-container">
         <div id="ytplayer"></div>
@@ -567,7 +757,7 @@
         <span class="music-label" id="music-label">Music</span>
     </div>
 
-    <!-- RSVP MODAL OVERLAY -->
+    <!-- RSVP MODAL OVERLAY (FORMSUBMIT.CO) -->
     <div id="rsvp-modal" class="rsvp-modal">
         <div class="rsvp-card">
             <span class="close-modal" id="close-rsvp">&times;</span>
@@ -575,8 +765,8 @@
             <div class="horizontal-line" style="margin: 15px auto 25px auto; width: 40px;"></div>
             
             <form id="rsvp-form">
-                <input type="text" name="Name" class="rsvp-input" placeholder="Your Full Name" required>
-                <input type="tel" name="Phone" class="rsvp-input" placeholder="Phone Number" required>
+                <input type="text" name="Name" id="guest-name" class="rsvp-input" placeholder="Your Full Name" required>
+                <input type="tel" name="Phone" id="guest-phone" class="rsvp-input" placeholder="Phone Number" required>
                 <button type="submit" class="rsvp-btn" id="submit-btn" style="width: 100%; margin-top: 10px;">Confirm Attendance</button>
             </form>
             <div id="rsvp-status" class="rsvp-status"></div>
@@ -586,11 +776,11 @@
     <div class="reel-container">
         
         <!-- SLIDE 1: WELCOME -->
-        <section class="slide">
+        <section class="slide" id="slide-1">
             <div class="slide-bg bg-slide-1"></div>
             <div class="slide-overlay"></div>
             
-            <div class="editorial-wrapper" style="margin-bottom: 10vh;">
+            <div class="editorial-wrapper" id="welcome-wrapper" style="margin-bottom: 10vh;">
                 <div class="christian-cross animate-item" style="margin-bottom: 20px;"></div>
                 
                 <div class="animate-item" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.1rem, 4.5vw, 1.3rem); color: var(--kasavu-gold); margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">
@@ -600,3 +790,133 @@
                 <div class="animate-item" style="font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: clamp(0.55rem, 2vw, 0.65rem); letter-spacing: 4px; color: var(--pure-white); text-transform: uppercase; margin-bottom: 22px; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">
                     Together with their Families
                 </div>
+                
+                <h1 class="names-script animate-item">Sana Sunny</h1>
+                <div class="ampersand animate-item">&</div>
+                <h1 class="names-script animate-item">Hazel Joshy Thomas</h1>
+                
+                <div class="horizontal-line animate-item" style="margin: 20px auto;"></div>
+                
+                <div class="animate-item" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1rem, 4vw, 1.2rem); color: rgba(253, 251, 247, 0.95); line-height: 1.4; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
+                    invite you to witness as they say "I do"<br>and celebrate<br>
+                    <span style="font-family: 'Montserrat', sans-serif; font-weight: 300; font-style: normal; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--soft-gold); display: block; margin-top: 12px; line-height: 1.6;">A love story written in every<br>color of the rainbow</span>
+                </div>
+            </div>
+            
+            <div class="swipe-indicator">Swipe Down</div>
+        </section>
+
+        <!-- SLIDE 2: THE PHOTOS (7 PHOTOS INFINITE SCROLLING + PROGRESS DOTS) -->
+        <section class="slide">
+            <div class="horizontal-carousel" id="photo-carousel">
+                <div class="carousel-item">
+                    <div class="carousel-bg" style="background-image: url('PhotoA.jpg');"></div>
+                    <div class="carousel-img" style="background-image: url('PhotoA.jpg');"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-bg" style="background-image: url('PhotoB.jpg');"></div>
+                    <div class="carousel-img" style="background-image: url('PhotoB.jpg');"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-bg" style="background-image: url('PhotoC.jpg');"></div>
+                    <div class="carousel-img" style="background-image: url('PhotoC.jpg');"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-bg" style="background-image: url('PhotoD.jpg');"></div>
+                    <div class="carousel-img" style="background-image: url('PhotoD.jpg');"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-bg" style="background-image: url('PhotoE.jpg');"></div>
+                    <div class="carousel-img" style="background-image: url('PhotoE.jpg');"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-bg" style="background-image: url('PhotoF.jpg');"></div>
+                    <div class="carousel-img" style="background-image: url('PhotoF.jpg');"></div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-bg" style="background-image: url('PhotoG.jpg');"></div>
+                    <div class="carousel-img" style="background-image: url('PhotoG.jpg');"></div>
+                </div>
+            </div>
+            
+            <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(5,10,7,0) 0%, rgba(5,10,7,0.2) 60%, rgba(5,10,7,0.95) 100%); pointer-events: none;"></div>
+            
+            <div class="editorial-wrapper" style="position: absolute; bottom: 8%; pointer-events: none;">
+                <div class="animate-item" style="font-family: 'Montserrat', sans-serif; font-size: 0.7rem; letter-spacing: 4px; color: var(--kasavu-gold); text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
+                    &#8592; Swipe Photos &#8594;
+                </div>
+                <!-- 7 Progress Dots -->
+                <div class="carousel-dots animate-item" id="carousel-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+            
+            <div class="swipe-indicator">Swipe Down</div>
+        </section>
+
+        <!-- SLIDE 3: MADHURAMVEPP -->
+        <section class="slide">
+            <div class="slide-bg bg-slide-2"></div>
+            <div class="slide-overlay"></div>
+            
+            <div class="editorial-wrapper">
+                <div class="vertical-line animate-item"></div>
+                <h2 class="event-heading animate-item">Madhuramvepp</h2>
+                <div class="horizontal-line animate-item"></div>
+                
+                <div class="date-highlight animate-item">December 25, 2026</div>
+                <div class="time-highlight animate-item">6:00 PM Onwards</div>
+                
+                <div class="animate-item" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.1rem, 4vw, 1.3rem); color: var(--soft-gold); margin-bottom: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
+                    At our Home
+                </div>
+                <div class="venue-bold animate-item">Veliyathmalil House</div>
+                <div class="details animate-item" style="font-size: 0.8em; letter-spacing: 2px;">Pulpally, Wayanad</div>
+                
+                <!-- MAP & CALENDAR PILLS -->
+                <div class="action-pills animate-item">
+                    <a href="https://maps.app.goo.gl/uZyzjoTzi6voL12eA" target="_blank" class="map-btn">
+                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        View Map
+                    </a>
+                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sana+%26+Hazel+-+Madhuramvepp&dates=20261225T123000Z/20261225T163000Z&details=Madhuramvepp+Ceremony+at+Veliyathmalil+House,+Pulpally,+Wayanad.+Theme:+Florals+/+North+Indian+Attire&location=Veliyathmalil+House,+Pulpally,+Wayanad" target="_blank" class="map-btn">
+                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/></svg>
+                        Save Date
+                    </a>
+                </div>
+
+                <div class="theme-note animate-item">Theme: Florals / North Indian Attire</div>
+            </div>
+            
+            <div class="swipe-indicator">Swipe Down</div>
+        </section>
+
+        <!-- SLIDE 4: ENGAGEMENT -->
+        <section class="slide">
+            <div class="slide-bg bg-slide-3"></div>
+            <div class="slide-overlay"></div>
+            
+            <div class="editorial-wrapper">
+                <div class="vertical-line animate-item"></div>
+                <h2 class="event-heading animate-item">Engagement</h2>
+                <div class="horizontal-line animate-item"></div>
+                
+                <div class="date-highlight animate-item">December 26, 2026</div>
+                <div class="time-highlight animate-item">11:30 AM Onwards</div>
+                <div class="venue-bold animate-item">St. Mary's Forane Church</div>
+                <div class="details animate-item" style="font-size: 0.8em; letter-spacing: 2px;">Mullenkolly</div>
+
+                <!-- MAP & CALENDAR PILLS -->
+                <div class="action-pills animate-item">
+                    <a href="https://maps.app.goo.gl/nyJetNYxQmmFh1du9" target="_blank" class="map-btn">
+                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        View Map
+                    </a>
+                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sana+%26+Hazel+-+Engagement&dates=20261226T060000Z/20261226T100000Z&details=Engagement+Ceremony+at+St.+Mary's+Forane+Church,+Mullenkolly.+Reception+to+follow+at+the+Parish+Hall.+Theme:+Traditional+Attire&location=St.+Mary's+Forane+Church,+Mullenkolly" target="_blank" class="map-btn">
+                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99
