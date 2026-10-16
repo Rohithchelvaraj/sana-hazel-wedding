@@ -15,9 +15,25 @@
     <meta name="twitter:description" content="Join us to celebrate our love story on December 25 & 26, 2026 in Wayanad, Kerala.">
     <meta name="twitter:image" content="PhotoA.jpg">
 
+    <!-- Chalisa Oktavia Web Font & Google Editorial Fonts -->
+    <link href="https://fonts.cdnfonts.com/css/chalisa-oktavia" rel="stylesheet">
+
     <style>
         /* High-End Editorial & Regal Calligraphy Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500&family=Pinyon+Script&display=swap');
+        @import url('https://fonts.cdnfonts.com/css/chalisa-oktavia');
+
+        /* Optional Local Fallback if you upload the font file to your GitHub repo */
+        @font-face {
+            font-family: 'Chalisa Oktavia';
+            src: local('Chalisa Oktavia'), local('ChalisaOktavia'),
+                 url('ChalisaOktavia.ttf') format('truetype'),
+                 url('Chalisa Oktavia.ttf') format('truetype'),
+                 url('ChalisaOktavia.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
         
         :root {
             --kasavu-gold: #D4AF37;
@@ -129,8 +145,8 @@
             z-index: 5;
             text-align: center;
             padding: 25px 20px;
-            width: 88%;
-            max-width: 420px;
+            width: 90%;
+            max-width: 440px;
             transition: transform 0.8s ease, opacity 0.8s ease;
         }
 
@@ -148,18 +164,19 @@
             margin-bottom: 18px;
         }
 
-        /* Shimmering Metallic Gold Foil Text Effect */
+        /* CHALISA OKTAVIA with Shimmering Metallic Gold Foil Text Effect */
         .gold-foil-names {
-            font-family: 'Pinyon Script', cursive;
-            font-size: clamp(2.8rem, 11vw, 4.2rem);
-            line-height: 1.05;
+            font-family: 'Chalisa Oktavia', 'Pinyon Script', cursive;
+            font-size: clamp(2.6rem, 10.5vw, 4rem);
+            line-height: 1.25;
             margin: 0;
             background: linear-gradient(135deg, #C59B27 0%, #FCF6BA 30%, #D4AF37 50%, #FBF5B7 70%, #AA771C 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 4px 15px rgba(0,0,0,0.85));
             font-weight: 400;
-            padding: 4px 0;
+            padding: 10px 12px;
+            display: block;
         }
 
         .env-ampersand {
@@ -167,13 +184,13 @@
             font-style: italic;
             font-size: clamp(1.3rem, 4.5vw, 1.7rem);
             color: var(--kasavu-gold);
-            margin: 4px 0;
+            margin: 2px 0;
             letter-spacing: 2px;
         }
 
         /* 3D Luxury Gold Wax Seal */
         .wax-seal-wrapper {
-            margin: 32px auto 14px auto;
+            margin: 28px auto 14px auto;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -834,7 +851,7 @@
 
             <!-- Revealed silently upon submission -->
             <div class="rsvp-thank-you" id="rsvp-thank-you">
-                <div style="font-family: 'Pinyon Script', cursive; font-size: 2.6rem; color: var(--kasavu-gold); margin-bottom: 10px;">
+                <div style="font-family: 'Chalisa Oktavia', 'Pinyon Script', cursive; font-size: 2.6rem; color: var(--kasavu-gold); margin-bottom: 10px;">
                     Thank You
                 </div>
                 <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem; color: var(--off-white); line-height: 1.5;">
@@ -1111,182 +1128,3 @@
 
             closeModal.addEventListener('click', () => {
                 modal.classList.remove('active');
-            });
-
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.remove('active');
-                }
-            });
-
-            rsvpForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                submitBtn.innerText = "Sending...";
-                submitBtn.disabled = true;
-
-                const formData = {
-                    Name: document.getElementById('rsvp-name').value,
-                    Phone: document.getElementById('rsvp-phone').value,
-                    _subject: "New Wedding RSVP - Sana & Hazel!"
-                };
-
-                fetch("https://formsubmit.co/ajax/sanasunny401@gmail.com", {
-                    method: "POST",
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                })
-                .then(response => response.json())
-                .then(() => {
-                    rsvpForm.style.display = "none";
-                    thankYouBox.style.display = "block";
-                })
-                .catch(() => {
-                    // Fallback to standard submission if first-time activation is pending
-                    rsvpForm.action = "https://formsubmit.co/sanasunny401@gmail.com";
-                    rsvpForm.method = "POST";
-                    rsvpForm.submit();
-                });
-            });
-
-            // 5. Ambient Gold Dust Particle System
-            const canvas = document.getElementById('gold-dust-canvas');
-            const ctx = canvas.getContext('2d');
-            let width = canvas.width = window.innerWidth;
-            let height = canvas.height = window.innerHeight;
-
-            window.addEventListener('resize', () => {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            });
-
-            const particles = Array.from({ length: 35 }, () => ({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                radius: Math.random() * 1.8 + 0.5,
-                speedY: -(Math.random() * 0.35 + 0.1),
-                speedX: (Math.random() - 0.5) * 0.25,
-                alpha: Math.random() * 0.55 + 0.15,
-                phase: Math.random() * Math.PI * 2
-            }));
-
-            function renderParticles() {
-                ctx.clearRect(0, 0, width, height);
-                particles.forEach(p => {
-                    p.y += p.speedY;
-                    p.x += p.speedX + Math.sin(p.phase) * 0.15;
-                    p.phase += 0.02;
-
-                    if (p.y < -10) p.y = height + 10;
-                    if (p.x < -10) p.x = width + 10;
-                    if (p.x > width + 10) p.x = -10;
-
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(229, 193, 88, ${p.alpha})`;
-                    ctx.shadowBlur = 8;
-                    ctx.shadowColor = "rgba(212, 175, 55, 0.8)";
-                    ctx.fill();
-                });
-                requestAnimationFrame(renderParticles);
-            }
-            renderParticles();
-        });
-
-        // 6. YouTube Audio Loop & Envelope Unlock Logic (0:00 -> 0:25, then loops 0:22 -> 0:25)
-        let player;
-        let isPlaying = false;
-        let loopInterval;
-        let playerReady = false;
-
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('ytplayer', {
-                height: '10',
-                width: '10',
-                videoId: 'ZqBmRegGM9Y',
-                playerVars: {
-                    'playsinline': 1,
-                    'controls': 0,
-                    'disablekb': 1,
-                    'fs': 0,
-                    'rel': 0,
-                    'start': 0
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        const musicBtn = document.getElementById('music-toggle');
-        const musicText = document.getElementById('music-text');
-        const envelopeScreen = document.getElementById('envelope-screen');
-
-        function startBackgroundMusic() {
-            if (playerReady && !isPlaying && player && player.playVideo) {
-                player.seekTo(0);
-                player.playVideo();
-                isPlaying = true;
-                musicText.innerText = "Music";
-                musicBtn.classList.add('playing');
-            }
-        }
-
-        function onPlayerReady(event) {
-            playerReady = true;
-        }
-
-        // Opening the Envelope unlocks & plays the music immediately
-        envelopeScreen.addEventListener('click', () => {
-            envelopeScreen.classList.add('opening');
-            startBackgroundMusic();
-
-            setTimeout(() => {
-                envelopeScreen.classList.add('opened');
-            }, 650);
-        });
-
-        // Monitors the video to seamlessly loop back to 0:22 after hitting 0:25
-        function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.PLAYING) {
-                clearInterval(loopInterval);
-                loopInterval = setInterval(() => {
-                    if (player.getCurrentTime() >= 25) {
-                        player.seekTo(22);
-                    }
-                }, 50);
-            } else {
-                clearInterval(loopInterval);
-            }
-        }
-
-        // Play/Pause Manual Button Logic
-        musicBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            if (!player || !player.playVideo) return;
-
-            if (isPlaying) {
-                player.pauseVideo();
-                musicText.innerText = "Play";
-                musicBtn.classList.remove('playing');
-            } else {
-                if (player.getCurrentTime() >= 25) {
-                    player.seekTo(22);
-                }
-                player.playVideo();
-                musicText.innerText = "Music";
-                musicBtn.classList.add('playing');
-            }
-            isPlaying = !isPlaying;
-        });
-    </script>
-</body>
-</html>
