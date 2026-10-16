@@ -42,8 +42,6 @@
             --pure-white: #FFFFFF;
             --off-white: #FDFBF7;
             --obsidian: #050806;
-            --envelope-dark: #090e0b;
-            --envelope-flap: #0d1410;
         }
 
         body, html {
@@ -72,14 +70,17 @@
             align-items: center;
             perspective: 1200px;
             cursor: pointer;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s;
             overflow: hidden;
         }
 
         .envelope-overlay.opened {
             opacity: 0;
-            transform: scale(1.08);
+            transform: scale(1.06);
             pointer-events: none;
+            visibility: hidden;
         }
 
         /* Subtle outer gold frame on envelope screen */
@@ -106,9 +107,10 @@
             background: linear-gradient(180deg, #131b16 0%, #0a100c 100%);
             clip-path: polygon(0 0, 100% 0, 50% 100%);
             transform-origin: top center;
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 3;
             box-shadow: 0 15px 40px rgba(0,0,0,0.9);
+            pointer-events: none;
         }
 
         /* Gold trim along the V-edge of the top flap */
@@ -119,8 +121,9 @@
             background: linear-gradient(90deg, rgba(212,175,55,0.15), rgba(247,231,206,0.7), rgba(212,175,55,0.15));
             clip-path: polygon(0 0, 100% 0, 50% 100%, 49.6% 99.4%, 0 0.5%);
             transform-origin: top center;
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 2;
+            pointer-events: none;
         }
 
         /* Bottom Pocket Lines */
@@ -132,6 +135,7 @@
             clip-path: polygon(0 100%, 100% 100%, 50% 0);
             border-top: 1px solid rgba(212, 175, 55, 0.2);
             z-index: 1;
+            pointer-events: none;
         }
 
         .envelope-overlay.opening .envelope-flap-top,
@@ -147,7 +151,7 @@
             padding: 25px 20px;
             width: 90%;
             max-width: 440px;
-            transition: transform 0.8s ease, opacity 0.8s ease;
+            transition: transform 0.7s ease, opacity 0.7s ease;
         }
 
         .envelope-overlay.opening .envelope-content {
@@ -644,487 +648,4 @@
         @keyframes swipePulse {
             0% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
             50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
-            100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
-        }
-
-        /* 
-         * RSVP MODAL & BUTTON
-         */
-        .rsvp-btn {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 13px 40px;
-            background: transparent;
-            border: 1px solid var(--kasavu-gold);
-            color: var(--kasavu-gold);
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 0.78rem;
-            font-family: 'Cinzel', serif;
-            transition: all 0.5s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            cursor: pointer;
-        }
-        
-        .rsvp-btn:hover {
-            background: var(--kasavu-gold);
-            color: #000;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-        }
-
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            z-index: 2000; display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1; pointer-events: all;
-        }
-
-        .modal-content {
-            background: rgba(10, 15, 12, 0.95);
-            border: 1px solid var(--kasavu-gold);
-            padding: 40px 30px;
-            width: 85%; max-width: 380px;
-            border-radius: 4px;
-            text-align: center;
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.4s ease;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-        }
-
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-
-        .close-modal {
-            position: absolute; top: 10px; right: 20px;
-            color: var(--kasavu-gold); font-size: 28px; cursor: pointer;
-            font-family: 'Montserrat', sans-serif; font-weight: 300; transition: color 0.3s ease;
-        }
-
-        .close-modal:hover { color: var(--pure-white); }
-
-        .form-input {
-            width: 100%; padding: 12px; margin-bottom: 20px;
-            background: transparent; border: 1px solid rgba(212, 175, 55, 0.4);
-            color: var(--pure-white); font-family: 'Montserrat', sans-serif;
-            box-sizing: border-box; border-radius: 2px; text-align: center;
-            letter-spacing: 2px; transition: border-color 0.3s ease;
-        }
-        .form-input::placeholder { color: rgba(255,255,255,0.4); }
-        .form-input:focus { outline: none; border-color: var(--kasavu-gold); }
-
-        .rsvp-thank-you {
-            display: none;
-            padding: 15px 0;
-            animation: fadeIn 0.8s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 
-         * ENHANCED AESTHETIC MUSIC BUTTON (Glass Pill with Audio Waves)
-         */
-        .music-pill {
-            position: fixed; top: 25px; right: 25px;
-            display: flex; align-items: center; gap: 8px;
-            background: rgba(10, 15, 12, 0.5);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            border: 0.5px solid rgba(212, 175, 55, 0.4);
-            padding: 10px 18px; border-radius: 30px; z-index: 100;
-            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            transition: all 0.3s ease;
-            animation: musicPulseAttention 2.5s infinite;
-        }
-
-        .music-pill.playing {
-            border-color: var(--kasavu-gold);
-            background: rgba(10, 15, 12, 0.85);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-            animation: none;
-        }
-
-        .music-text {
-            color: var(--kasavu-gold);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.6rem; letter-spacing: 2px;
-            text-transform: uppercase; font-weight: 500;
-        }
-
-        .wave-container {
-            display: flex; gap: 2px; height: 12px; align-items: center; justify-content: center;
-        }
-        
-        .wave-bar {
-            width: 2px; height: 3px;
-            background: var(--kasavu-gold); border-radius: 2px;
-            transition: height 0.2s ease;
-        }
-
-        .music-pill.playing .wave-bar:nth-child(1) { animation: wave 1s infinite alternate ease-in-out; }
-        .music-pill.playing .wave-bar:nth-child(2) { animation: wave 1.2s infinite alternate ease-in-out; animation-delay: 0.2s; }
-        .music-pill.playing .wave-bar:nth-child(3) { animation: wave 0.8s infinite alternate ease-in-out; animation-delay: 0.4s; }
-
-        @keyframes wave {
-            0% { height: 3px; }
-            100% { height: 12px; }
-        }
-
-        @keyframes musicPulseAttention {
-            0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-        }
-
-        #yt-player-container {
-            position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; pointer-events: none;
-        }
-
-    </style>
-</head>
-<body>
-
-    <!-- 1. BESPOKE LUXURY ENVELOPE ENTRY SCREEN -->
-    <div id="envelope-screen" class="envelope-overlay">
-        <div class="envelope-border"></div>
-        <div class="envelope-flap-top"></div>
-        <div class="envelope-flap-edge"></div>
-        <div class="envelope-pocket-bottom"></div>
-
-        <div class="envelope-content">
-            <div class="christian-cross" style="height: 34px; margin-bottom: 18px;"></div>
-            <div class="env-pretitle">The Wedding Celebration Of</div>
-            
-            <h1 class="gold-foil-names">Sana Sunny</h1>
-            <div class="env-ampersand">&amp;</div>
-            <h1 class="gold-foil-names">Hazel Joshy Thomas</h1>
-
-            <div class="wax-seal-wrapper">
-                <div class="wax-seal">
-                    <span class="seal-monogram">S&amp;H</span>
-                </div>
-                <div class="tap-prompt">Tap Seal to Open</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. AMBIENT GOLD DUST PARTICLES CANVAS -->
-    <canvas id="gold-dust-canvas"></canvas>
-
-    <!-- YOUTUBE PLAYER CONTAINER -->
-    <div id="yt-player-container">
-        <div id="ytplayer"></div>
-    </div>
-
-    <!-- ENHANCED AESTHETIC MUSIC BUTTON -->
-    <div id="music-toggle" class="music-pill">
-        <div class="music-text" id="music-text">Play</div>
-        <div class="wave-container">
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-            <div class="wave-bar"></div>
-        </div>
-    </div>
-
-    <!-- SEAMLESS IN-APP RSVP MODAL -->
-    <div class="modal-overlay" id="rsvp-modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-modal">&times;</span>
-            <div class="christian-cross" style="height: 30px; margin-bottom: 20px;"></div>
-            <h2 class="event-heading" style="font-size: 1.4rem; margin-bottom: 25px;">RSVP</h2>
-            
-            <form id="rsvp-form">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_subject" value="New Wedding RSVP!">
-                
-                <input type="text" id="rsvp-name" name="Name" placeholder="Your Name" required class="form-input">
-                <input type="tel" id="rsvp-phone" name="Phone Number" placeholder="Phone Number" required class="form-input">
-                
-                <button type="submit" id="rsvp-submit-btn" class="rsvp-btn" style="width: 100%; margin-top: 5px;">Confirm RSVP</button>
-            </form>
-
-            <!-- Revealed silently upon submission -->
-            <div class="rsvp-thank-you" id="rsvp-thank-you">
-                <div style="font-family: 'Chalisa Oktavia', 'Pinyon Script', cursive; font-size: 2.6rem; color: var(--kasavu-gold); margin-bottom: 10px;">
-                    Thank You
-                </div>
-                <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.15rem; color: var(--off-white); line-height: 1.5;">
-                    Your response has been recorded.<br>We cannot wait to celebrate with you!
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="reel-container">
-        
-        <!-- SLIDE 1: WELCOME -->
-        <section class="slide">
-            <div class="slide-bg bg-slide-1"></div>
-            <div class="slide-overlay"></div>
-            
-            <div class="editorial-wrapper" style="margin-bottom: 10vh;">
-                <div class="christian-cross animate-item" style="margin-bottom: 20px;"></div>
-                
-                <div class="animate-item" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.1rem, 4.5vw, 1.3rem); color: var(--kasavu-gold); margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">
-                    Two hearts, one love, and a lifetime ahead.
-                </div>
-                
-                <div class="animate-item" style="font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: clamp(0.55rem, 2vw, 0.65rem); letter-spacing: 4px; color: var(--pure-white); text-transform: uppercase; margin-bottom: 22px; text-shadow: 0 2px 8px rgba(0,0,0,0.9);">
-                    Together with their Families
-                </div>
-                
-                <h1 class="names-script animate-item">Sana Sunny</h1>
-                <div class="ampersand animate-item">&amp;</div>
-                <h1 class="names-script animate-item">Hazel Joshy Thomas</h1>
-                
-                <div class="horizontal-line animate-item" style="margin: 20px auto;"></div>
-                
-                <div class="animate-item" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1rem, 4vw, 1.2rem); color: rgba(253, 251, 247, 0.95); line-height: 1.4; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
-                    invite you to witness as they say "I do"<br>and celebrate<br>
-                    <span style="font-family: 'Montserrat', sans-serif; font-weight: 300; font-style: normal; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--soft-gold); display: block; margin-top: 12px; line-height: 1.6;">A love story written in every<br>color of the rainbow</span>
-                </div>
-            </div>
-            
-            <div class="swipe-indicator">Swipe Down</div>
-        </section>
-
-        <!-- SLIDE 2: THE PHOTOS -->
-        <section class="slide">
-            <div class="horizontal-carousel" id="photo-carousel">
-                <div class="carousel-item">
-                    <div class="carousel-bg" style="background-image: url('PhotoA.jpg');"></div>
-                    <div class="carousel-img" style="background-image: url('PhotoA.jpg');"></div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-bg" style="background-image: url('PhotoB.jpg');"></div>
-                    <div class="carousel-img" style="background-image: url('PhotoB.jpg');"></div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-bg" style="background-image: url('PhotoC.jpg');"></div>
-                    <div class="carousel-img" style="background-image: url('PhotoC.jpg');"></div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-bg" style="background-image: url('PhotoD.jpg');"></div>
-                    <div class="carousel-img" style="background-image: url('PhotoD.jpg');"></div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-bg" style="background-image: url('PhotoE.jpg');"></div>
-                    <div class="carousel-img" style="background-image: url('PhotoE.jpg');"></div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-bg" style="background-image: url('PhotoF.jpg');"></div>
-                    <div class="carousel-img" style="background-image: url('PhotoF.jpg');"></div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-bg" style="background-image: url('PhotoG.jpg');"></div>
-                    <div class="carousel-img" style="background-image: url('PhotoG.jpg');"></div>
-                </div>
-            </div>
-            
-            <div class="slide-overlay" style="background: linear-gradient(180deg, rgba(5,10,7,0) 0%, rgba(5,10,7,0.2) 60%, rgba(5,10,7,0.95) 100%); pointer-events: none;"></div>
-            
-            <div class="editorial-wrapper" style="position: absolute; bottom: 8%; pointer-events: none;">
-                <div class="animate-item" style="font-family: 'Montserrat', sans-serif; font-size: 0.75rem; letter-spacing: 4px; color: var(--kasavu-gold); text-transform: uppercase; margin-top: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
-                    &#8592; Swipe Photos &#8594;
-                </div>
-            </div>
-            
-            <div class="swipe-indicator">Swipe Down</div>
-        </section>
-
-        <!-- SLIDE 3: MADHURAMVEPP -->
-        <section class="slide">
-            <div class="slide-bg bg-slide-2"></div>
-            <div class="slide-overlay"></div>
-            
-            <div class="editorial-wrapper">
-                <div class="vertical-line animate-item"></div>
-                <h2 class="event-heading animate-item">Madhuramvepp</h2>
-                <div class="horizontal-line animate-item"></div>
-                
-                <div class="date-highlight animate-item">December 25, 2026</div>
-                <div class="time-highlight animate-item">6:00 PM Onwards</div>
-                
-                <div class="animate-item" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.1rem, 4vw, 1.3rem); color: var(--soft-gold); margin-bottom: 6px; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
-                    At our Home
-                </div>
-                <div class="venue-bold animate-item">Veliyathmalil House</div>
-                <div class="details animate-item" style="font-size: 0.8em; letter-spacing: 2px;">Pulpally, Wayanad</div>
-                
-                <!-- MAP & SAVE THE DATE PILL BUTTONS -->
-                <div class="action-btn-group animate-item">
-                    <a href="https://maps.app.goo.gl/uZyzjoTzi6voL12eA" target="_blank" class="map-btn">
-                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                        View Map
-                    </a>
-                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sana+%26+Hazel+-+Madhuramvepp&dates=20261225T180000/20261225T220000&details=We+look+forward+to+celebrating+with+you!+Theme:+Florals+/+North+Indian+Attire&location=Veliyathmalil+House,+Pulpally,+Wayanad" target="_blank" class="map-btn">
-                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-                        Save Date
-                    </a>
-                </div>
-
-                <div class="theme-note animate-item">Theme: Florals / North Indian Attire</div>
-            </div>
-            
-            <div class="swipe-indicator">Swipe Down</div>
-        </section>
-
-        <!-- SLIDE 4: ENGAGEMENT -->
-        <section class="slide">
-            <div class="slide-bg bg-slide-3"></div>
-            <div class="slide-overlay"></div>
-            
-            <div class="editorial-wrapper">
-                <div class="vertical-line animate-item"></div>
-                <h2 class="event-heading animate-item">Engagement</h2>
-                <div class="horizontal-line animate-item"></div>
-                
-                <div class="date-highlight animate-item">December 26, 2026</div>
-                <div class="time-highlight animate-item">11:30 AM Onwards</div>
-                <div class="venue-bold animate-item">St. Mary's Forane Church</div>
-                <div class="details animate-item" style="font-size: 0.8em; letter-spacing: 2px;">Mullenkolly</div>
-
-                <!-- MAP & SAVE THE DATE PILL BUTTONS -->
-                <div class="action-btn-group animate-item">
-                    <a href="https://maps.app.goo.gl/nyJetNYxQmmFh1du9" target="_blank" class="map-btn">
-                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                        View Map
-                    </a>
-                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sana+%26+Hazel+-+Engagement+Ceremony&dates=20261226T113000/20261226T153000&details=Reception+to+follow+at+the+Parish+Hall.+Theme:+Traditional+Attire.&location=St.+Mary's+Forane+Church,+Mullenkolly,+Wayanad" target="_blank" class="map-btn">
-                        <svg class="map-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-                        Save Date
-                    </a>
-                </div>
-
-                <div class="theme-note animate-item" style="margin-top: 5px;">Reception to follow at the Parish Hall</div>
-                <div class="theme-note animate-item" style="color: var(--soft-gold); margin-top: 5px; font-size: 1rem;">Theme: Traditional Attire</div>
-            </div>
-            
-            <div class="swipe-indicator">Swipe Down</div>
-        </section>
-
-        <!-- SLIDE 5: COUNTDOWN & RSVP -->
-        <section class="slide">
-            <div class="slide-bg bg-slide-4"></div>
-            <div class="slide-overlay"></div>
-            
-            <div class="editorial-wrapper">
-                <div class="vertical-line animate-item" style="height: 35px; margin-bottom: 12px;"></div>
-                <h2 class="event-heading animate-item">Join Us</h2>
-                <div class="horizontal-line animate-item" style="margin: 15px auto;"></div>
-                
-                <div class="details animate-item" style="text-transform: none; letter-spacing: 1.5px; line-height: 1.6;">
-                    We would be deeply honored to share<br>these beautiful moments with you.
-                </div>
-
-                <!-- LIVE EDITORIAL COUNTDOWN -->
-                <div class="countdown-container animate-item" id="countdown">
-                    <div class="countdown-box">
-                        <span class="countdown-num" id="cd-days">00</span>
-                        <span class="countdown-label">Days</span>
-                    </div>
-                    <span class="countdown-sep">:</span>
-                    <div class="countdown-box">
-                        <span class="countdown-num" id="cd-hours">00</span>
-                        <span class="countdown-label">Hours</span>
-                    </div>
-                    <span class="countdown-sep">:</span>
-                    <div class="countdown-box">
-                        <span class="countdown-num" id="cd-mins">00</span>
-                        <span class="countdown-label">Mins</span>
-                    </div>
-                    <span class="countdown-sep">:</span>
-                    <div class="countdown-box">
-                        <span class="countdown-num" id="cd-secs">00</span>
-                        <span class="countdown-label">Secs</span>
-                    </div>
-                </div>
-                
-                <div class="animate-item" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.15rem, 4.5vw, 1.4rem); color: var(--kasavu-gold); margin: 18px 0 12px 0; line-height: 1.4; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
-                    "As we turn the page to a new beginning,<br>
-                    <span style="font-family: 'Pinyon Script', cursive; font-style: normal; font-size: 1.9em; color: var(--pure-white); display: block; margin-top: 6px; line-height: 1;">our greatest adventure unfolds..."</span>
-                </div>
-                
-                <div class="animate-item" style="margin-top: 12px;">
-                    <button class="rsvp-btn" id="open-rsvp-modal">RSVP Here</button>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-    <!-- SCRIPTS -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // 1. Scroll Animation Logic
-            const wrappers = document.querySelectorAll('.editorial-wrapper');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    } else {
-                        entry.target.classList.remove('visible'); 
-                    }
-                });
-            }, { threshold: 0.25 });
-
-            wrappers.forEach(wrapper => observer.observe(wrapper));
-
-            // 2. Infinite Scroll Simulation for Photos
-            const carousel = document.getElementById('photo-carousel');
-            if (carousel) {
-                const originalItems = carousel.innerHTML;
-                carousel.innerHTML = originalItems.repeat(10);
-                
-                setTimeout(() => {
-                    carousel.scrollLeft = window.innerWidth * 35;
-                }, 50);
-            }
-
-            // 3. Live Countdown Timer (Target: Dec 25, 2026, 6:00 PM IST)
-            const targetDate = new Date("2026-12-25T18:00:00+05:30").getTime();
-            const updateCountdown = () => {
-                const now = new Date().getTime();
-                const diff = targetDate - now;
-
-                if (diff <= 0) {
-                    document.getElementById('cd-days').innerText = "00";
-                    document.getElementById('cd-hours').innerText = "00";
-                    document.getElementById('cd-mins').innerText = "00";
-                    document.getElementById('cd-secs').innerText = "00";
-                    return;
-                }
-
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const secs = Math.floor((diff % (1000 * 60)) / 1000);
-
-                document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
-                document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
-                document.getElementById('cd-mins').innerText = String(mins).padStart(2, '0');
-                document.getElementById('cd-secs').innerText = String(secs).padStart(2, '0');
-            };
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-
-            // 4. Seamless In-App AJAX RSVP Form Logic
-            const rsvpBtn = document.getElementById('open-rsvp-modal');
-            const modal = document.getElementById('rsvp-modal');
-            const closeModal = document.getElementById('close-modal');
-            const rsvpForm = document.getElementById('rsvp-form');
-            const submitBtn = document.getElementById('rsvp-submit-btn');
-            const thankYouBox = document.getElementById('rsvp-thank-you');
-
-            rsvpBtn.addEventListener('click', () => {
-                modal.classList.add('active');
-            });
-
-            closeModal.addEventListener('click', () => {
-                modal.classList.remove('active');
+            100% { opacity: 0.4; transform: translateX(-50%) translate
