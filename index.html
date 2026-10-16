@@ -797,8 +797,8 @@
     <!-- 2. AMBIENT GOLD DUST PARTICLES CANVAS -->
     <canvas id="gold-dust-canvas"></canvas>
 
-    <!-- HTML5 AUDIO PLAYER FOR LOCAL MP3 -->
-    <audio id="bg-audio" preload="auto" src="Nagumo.mp3"></audio>
+    <!-- HTML5 LOCAL MP3 AUDIO PLAYER -->
+    <audio id="bg-audio" src="Nagumo.mp3" preload="auto"></audio>
 
     <!-- ENHANCED AESTHETIC MUSIC BUTTON -->
     <div id="music-toggle" class="music-pill">
@@ -931,6 +931,7 @@
                 <div class="animate-item" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.1rem, 4vw, 1.3rem); color: var(--soft-gold); margin-bottom: 6px; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
                     At our Home
                 </div>
+                <!-- UPDATED TEXT VELIYATHUMALIL HOUSE -->
                 <div class="venue-bold animate-item">Veliyathumalil House</div>
                 <div class="details animate-item" style="font-size: 0.8em; letter-spacing: 2px;">Pulpally, Wayanad</div>
                 
@@ -1185,35 +1186,64 @@
             renderParticles();
         });
 
-        // 6. Local MP3 Audio Sequence & Envelope Unlock Logic
-        // Sequence: 0:01 -> 0:25, then jumps to 0:59 -> 1:15, then jumps to 2:22 -> 2:33, then loops back to 0:59 (or 0:01)
+        // 6. Custom Multi-Segment Audio Sequencer with Crossfade for 'Nagumo.mp3'
         const audio = document.getElementById('bg-audio');
         const musicBtn = document.getElementById('music-toggle');
         const musicText = document.getElementById('music-text');
         const envelopeScreen = document.getElementById('envelope-screen');
+        
         let isPlaying = false;
-
-        // Custom segment sequence mapping
-        // 0: 0.01 to 25.0
-        // 1: 59.0 to 75.0 (1:15)
-        // 2: 142.0 (2:22) to 153.0 (2:33)
+        
+        // Defined segments: [start, end] in seconds
         const segments = [
-            { start: 0.01, end: 25.0 },
-            { start: 59.0, end: 75.0 },
-            { start: 142.0, end: 153.0 }
+            { start: 1.0, end: 25.0 },
+            { start: 59.0, end: 75.0 },  // 1:15 is 75 seconds
+            { start: 142.0, end: 153.0 } // 2:22 is 142s, 2:33 is 153s
         ];
         let currentSegmentIndex = 0;
 
+        audio.volume = 1.0;
+
+        function fadeIn() {
+            audio.volume = 0.0;
+            let vol = 0.0;
+            const fadeInterval = setInterval(() => {
+                vol += 0.05;
+                if (vol >= 1.0) {
+                    audio.volume = 1.0;
+                    clearInterval(fadeInterval);
+                } else {
+                    audio.volume = vol;
+                }
+            }, 50); // 50ms steps for smooth fade in
+        }
+
+        function fadeOutAndSwitch(nextSegment) {
+            let vol = audio.volume;
+            const fadeOutInterval = setInterval(() => {
+                vol -= 0.1;
+                if (vol <= 0.0) {
+                    audio.volume = 0.0;
+                    clearInterval(fadeOutInterval);
+                    audio.currentTime = nextSegment.start;
+                    audio.play();
+                    fadeIn();
+                } else {
+                    audio.volume = vol;
+                }
+            }, 40);
+        }
+
+        // Monitor playback time to handle multi-segment looping with crossfade
         audio.addEventListener('timeupdate', () => {
             if (!isPlaying) return;
             const currentSeg = segments[currentSegmentIndex];
-            if (audio.currentTime >= currentSeg.end) {
-                // Move to next segment, or loop back to segment 1 (index 1) for the recurring loop sequence
-                currentSegmentIndex++;
-                if (currentSegmentIndex >= segments.length) {
-                    currentSegmentIndex = 1; // Loops back to 0:59 after finishing the 2:22-2:33 block
-                }
-                audio.currentTime = segments[currentSegmentIndex].start;
+            
+            // If we approach 0.8 seconds before the end of the segment, crossfade to the next segment
+            if (audio.currentTime >= (currentSeg.end - 0.8)) {
+                currentSegmentIndex = (currentSegmentIndex + 1) % segments.length;
+                const nextSeg = segments[currentSegmentIndex];
+                fadeOutAndSwitch(nextSeg);
             }
         });
 
@@ -1223,13 +1253,14 @@
                 audio.currentTime = segments[0].start;
                 audio.play().then(() => {
                     isPlaying = true;
+                    fadeIn();
                     musicText.innerText = "Music";
                     musicBtn.classList.add('playing');
-                }).catch(e => console.log("Audio play prevented:", e));
+                }).catch(err => console.log("Audio play blocked:", err));
             }
         }
 
-        // Opening the Envelope unlocks & plays the music immediately
+        // Opening the Envelope unlocks & plays the local audio immediately
         envelopeScreen.addEventListener('click', () => {
             envelopeScreen.classList.add('opening');
             startBackgroundMusic();
@@ -1244,15 +1275,11 @@
             e.stopPropagation(); 
             if (isPlaying) {
                 audio.pause();
+                isPlaying = false;
                 musicText.innerText = "Play";
                 musicBtn.classList.remove('playing');
-                isPlaying = false;
             } else {
-                audio.play().then(() => {
-                    musicText.innerText = "Music";
-                    musicBtn.classList.add('playing');
-                    isPlaying = true;
-                }).catch(e => console.log("Audio play prevented:", e));
+                startBackgroundMusic();
             }
         });
     </script>
