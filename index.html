@@ -766,10 +766,6 @@
             100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
         }
 
-        #yt-player-container {
-            position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; pointer-events: none;
-        }
-
     </style>
 </head>
 <body>
@@ -801,10 +797,8 @@
     <!-- 2. AMBIENT GOLD DUST PARTICLES CANVAS -->
     <canvas id="gold-dust-canvas"></canvas>
 
-    <!-- YOUTUBE PLAYER CONTAINER -->
-    <div id="yt-player-container">
-        <div id="ytplayer"></div>
-    </div>
+    <!-- HTML5 AUDIO PLAYER FOR LOCAL MP3 -->
+    <audio id="bg-audio" preload="auto" src="Nagumo.mp3"></audio>
 
     <!-- ENHANCED AESTHETIC MUSIC BUTTON -->
     <div id="music-toggle" class="music-pill">
@@ -937,7 +931,7 @@
                 <div class="animate-item" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1.1rem, 4vw, 1.3rem); color: var(--soft-gold); margin-bottom: 6px; text-shadow: 0 2px 10px rgba(0,0,0,0.9);">
                     At our Home
                 </div>
-                <div class="venue-bold animate-item">Veliyathmalil House</div>
+                <div class="venue-bold animate-item">Veliyathumalil House</div>
                 <div class="details animate-item" style="font-size: 0.8em; letter-spacing: 2px;">Pulpally, Wayanad</div>
                 
                 <div class="action-btn-group animate-item">
@@ -945,7 +939,7 @@
                         <svg class="map-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                         View Map
                     </a>
-                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sana+%26+Hazel+-+Madhuramveppu&dates=20261225T180000/20261225T220000&details=We+look+forward+to+celebrating+with+you!+Theme:+Florals+/+North+Indian+Attire&location=Veliyathmalil+House,+Pulpally,+Wayanad" target="_blank" class="map-btn">
+                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Sana+%26+Hazel+-+Madhuramveppu&dates=20261225T180000/20261225T220000&details=We+look+forward+to+celebrating+with+you!+Theme:+Florals+/+North+Indian+Attire&location=Veliyathumalil+House,+Pulpally,+Wayanad" target="_blank" class="map-btn">
                         <svg class="map-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
                         Save Date
                     </a>
@@ -1191,53 +1185,48 @@
             renderParticles();
         });
 
-        // 6. YouTube Audio Loop & Envelope Unlock Logic (0:00 -> 0:25, then loops 0:22 -> 0:25)
-        let player;
-        let isPlaying = false;
-        let loopInterval;
-        let playerReady = false;
-
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('ytplayer', {
-                height: '10',
-                width: '10',
-                videoId: 'ZqBmRegGM9Y',
-                playerVars: {
-                    'playsinline': 1,
-                    'controls': 0,
-                    'disablekb': 1,
-                    'fs': 0,
-                    'rel': 0,
-                    'start': 0
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
+        // 6. Local MP3 Audio Sequence & Envelope Unlock Logic
+        // Sequence: 0:01 -> 0:25, then jumps to 0:59 -> 1:15, then jumps to 2:22 -> 2:33, then loops back to 0:59 (or 0:01)
+        const audio = document.getElementById('bg-audio');
         const musicBtn = document.getElementById('music-toggle');
         const musicText = document.getElementById('music-text');
         const envelopeScreen = document.getElementById('envelope-screen');
+        let isPlaying = false;
+
+        // Custom segment sequence mapping
+        // 0: 0.01 to 25.0
+        // 1: 59.0 to 75.0 (1:15)
+        // 2: 142.0 (2:22) to 153.0 (2:33)
+        const segments = [
+            { start: 0.01, end: 25.0 },
+            { start: 59.0, end: 75.0 },
+            { start: 142.0, end: 153.0 }
+        ];
+        let currentSegmentIndex = 0;
+
+        audio.addEventListener('timeupdate', () => {
+            if (!isPlaying) return;
+            const currentSeg = segments[currentSegmentIndex];
+            if (audio.currentTime >= currentSeg.end) {
+                // Move to next segment, or loop back to segment 1 (index 1) for the recurring loop sequence
+                currentSegmentIndex++;
+                if (currentSegmentIndex >= segments.length) {
+                    currentSegmentIndex = 1; // Loops back to 0:59 after finishing the 2:22-2:33 block
+                }
+                audio.currentTime = segments[currentSegmentIndex].start;
+            }
+        });
 
         function startBackgroundMusic() {
-            if (playerReady && !isPlaying && player && player.playVideo) {
-                player.seekTo(0);
-                player.playVideo();
-                isPlaying = true;
-                musicText.innerText = "Music";
-                musicBtn.classList.add('playing');
+            if (!isPlaying) {
+                currentSegmentIndex = 0;
+                audio.currentTime = segments[0].start;
+                audio.play().then(() => {
+                    isPlaying = true;
+                    musicText.innerText = "Music";
+                    musicBtn.classList.add('playing');
+                }).catch(e => console.log("Audio play prevented:", e));
             }
-        }
-
-        function onPlayerReady(event) {
-            playerReady = true;
         }
 
         // Opening the Envelope unlocks & plays the music immediately
@@ -1250,38 +1239,21 @@
             }, 650);
         });
 
-        // Monitors the video to seamlessly loop back to 0:22 after hitting 0:25
-        function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.PLAYING) {
-                clearInterval(loopInterval);
-                loopInterval = setInterval(() => {
-                    if (player.getCurrentTime() >= 25) {
-                        player.seekTo(22);
-                    }
-                }, 50);
-            } else {
-                clearInterval(loopInterval);
-            }
-        }
-
         // Play/Pause Manual Button Logic
         musicBtn.addEventListener('click', (e) => {
             e.stopPropagation(); 
-            if (!player || !player.playVideo) return;
-
             if (isPlaying) {
-                player.pauseVideo();
+                audio.pause();
                 musicText.innerText = "Play";
                 musicBtn.classList.remove('playing');
+                isPlaying = false;
             } else {
-                if (player.getCurrentTime() >= 25) {
-                    player.seekTo(22);
-                }
-                player.playVideo();
-                musicText.innerText = "Music";
-                musicBtn.classList.add('playing');
+                audio.play().then(() => {
+                    musicText.innerText = "Music";
+                    musicBtn.classList.add('playing');
+                    isPlaying = true;
+                }).catch(e => console.log("Audio play prevented:", e));
             }
-            isPlaying = !isPlaying;
         });
     </script>
 </body>
